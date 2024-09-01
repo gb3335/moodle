@@ -271,7 +271,7 @@ if ($context->id != $frontpagectx->id) {
 
 $selectactionparams = array(
     'id' => 'formactionid',
-    'class' => 'ms-2',
+    'class' => 'ml-2',
     'data-action' => 'toggle',
     'data-togglegroup' => 'participants-table',
     'data-toggle' => 'action',

@@ -53,7 +53,6 @@ class base_activity_test extends \advanced_testcase {
 
     public function setUp(): void {
         global $DB;
-        parent::setUp();
         $this->resetAfterTest();
         set_config('enableglobalsearch', true);
 
@@ -104,7 +103,6 @@ class base_activity_test extends \advanced_testcase {
             $this->generator->teardown();
             $this->generator = null;
         }
-        parent::tearDown();
     }
 
     /**

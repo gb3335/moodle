@@ -62,7 +62,6 @@ class lib_test extends \advanced_testcase {
     private $roleid;
 
     public function setUp(): void {
-        parent::setUp();
         $this->user = $this->getDataGenerator()->create_user();
         $this->course = $this->getDataGenerator()->create_course();
         $this->tree = new \core_user\output\myprofile\tree();

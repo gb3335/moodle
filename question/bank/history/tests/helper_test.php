@@ -54,7 +54,6 @@ class helper_test extends \advanced_testcase {
      * This is executed before running any test in this file.
      */
     public function setUp(): void {
-        parent::setUp();
         $this->setAdminUser();
         $generator = $this->getDataGenerator();
         $questiongenerator = $generator->get_plugin_generator('core_question');

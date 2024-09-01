@@ -184,8 +184,10 @@ class instance extends base {
             $this->get_entity_name()
         ))
             ->add_joins($this->get_joins())
+            ->set_type(column::TYPE_INTEGER)
             ->add_fields("{$instancealias}.itemid")
-            ->set_is_sortable(true);
+            ->set_is_sortable(true)
+            ->set_disabled_aggregation_all();
 
         // Time created.
         $columns[] = (new column(

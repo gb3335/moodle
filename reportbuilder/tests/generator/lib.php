@@ -16,7 +16,6 @@
 
 declare(strict_types=1);
 
-use core\{clock, di};
 use core_reportbuilder\manager;
 use core_reportbuilder\local\helpers\report as helper;
 use core_reportbuilder\local\helpers\schedule as schedule_helper;
@@ -209,9 +208,12 @@ class core_reportbuilder_generator extends component_generator_base {
             $record['message'] = $record['name'] . ' message';
         }
         if (!array_key_exists('timescheduled', $record)) {
-            $record['timescheduled'] = usergetmidnight(di::get(clock::class)->time() + DAYSECS);
+            $record['timescheduled'] = usergetmidnight(time() + DAYSECS);
         }
 
-        return schedule_helper::create_schedule((object) $record);
+        // Time to use as comparison against current date (null means current time).
+        $timenow = $record['timenow'] ?? null;
+
+        return schedule_helper::create_schedule((object) $record, $timenow);
     }
 }

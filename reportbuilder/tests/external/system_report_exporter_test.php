@@ -41,7 +41,6 @@ class system_report_exporter_test extends advanced_testcase {
         global $CFG;
 
         require_once("{$CFG->dirroot}/reportbuilder/tests/fixtures/system_report_available.php");
-        parent::setUpBeforeClass();
     }
 
     /**

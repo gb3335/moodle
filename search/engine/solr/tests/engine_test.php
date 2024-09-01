@@ -64,7 +64,6 @@ class engine_test extends \advanced_testcase {
     protected $engine = null;
 
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
         set_config('enableglobalsearch', true);
         set_config('searchengine', 'solr');
@@ -139,7 +138,6 @@ class engine_test extends \advanced_testcase {
             $this->generator->teardown();
             $this->generator = null;
         }
-        parent::tearDown();
     }
 
     /**

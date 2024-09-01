@@ -54,7 +54,6 @@ class provider_test extends \core_privacy\tests\provider_testcase {
      */
     protected function setUp(): void {
         global $DB;
-        parent::setUp();
 
         $this->resetAfterTest();
         $this->setAdminUser();

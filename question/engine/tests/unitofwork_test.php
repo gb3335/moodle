@@ -47,7 +47,6 @@ class unitofwork_test extends \data_loading_method_test_base {
     protected $observer;
 
     protected function setUp(): void {
-        parent::setUp();
         // Create a usage in an initial state, with one shortanswer question added,
         // and attempted in interactive mode submitted responses 'toad' then 'frog'.
         // Then set it to use a new unit of work for any subsequent changes.
@@ -66,7 +65,6 @@ class unitofwork_test extends \data_loading_method_test_base {
 
     public function tearDown(): void {
         question_bank::end_unit_test();
-        parent::tearDown();
     }
 
     protected function setup_initial_test_state($testdata) {

@@ -49,7 +49,6 @@ class document_test extends \advanced_testcase {
     protected $generator = null;
 
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
         set_config('enableglobalsearch', true);
 
@@ -135,7 +134,6 @@ class document_test extends \advanced_testcase {
             $this->generator->teardown();
             $this->generator = null;
         }
-        parent::tearDown();
     }
 
     /**

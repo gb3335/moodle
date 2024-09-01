@@ -172,11 +172,7 @@ export default class UserSearch extends search_combobox {
                             `<span class="font-weight-bold">${searchTerm.replace(/</g, '&lt;')}</span>`
                         );
 
-                        if (user.email) {
-                            user.matchingField = `${escapedMatchingField} (${user.email})`;
-                        } else {
-                            user.matchingField = escapedMatchingField;
-                        }
+                        user.matchingField = `${escapedMatchingField} (${user.email})`;
                         break;
                     }
                 }

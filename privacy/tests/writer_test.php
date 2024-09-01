@@ -47,7 +47,6 @@ class writer_test extends advanced_testcase {
      */
     public function tearDown(): void {
         writer::reset();
-        parent::tearDown();
     }
 
     /**

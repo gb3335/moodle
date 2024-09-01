@@ -298,10 +298,10 @@ $calendarCurrentDateBackground: $primary;
     .calendar_event_site,
     .calendar_event_group,
     .calendar_event_user {
-        a:has(> .icon) {
-            &:hover {
-                color: darken($calendarEventColor, 15%);
-                text-decoration: $link-decoration;
+        &:hover {
+            a {
+                color: $link-hover-color;
+                text-decoration: $link-hover-decoration;
             }
         }
     }

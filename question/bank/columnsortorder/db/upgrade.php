@@ -71,10 +71,10 @@ function xmldb_qbank_columnsortorder_upgrade(int $oldversion): bool {
         upgrade_plugin_savepoint(true, 2024042201, 'qbank', 'columnsortorder');
     }
 
-    if ($oldversion < 2024051000) {
+    if ($oldversion < 2024042202) {
         // Remove plugin entry created by previously incorrect 2024042201 savepoint.
         $DB->delete_records('config_plugins', ['plugin' => 'qbank_qbank_columnsortorder']);
-        upgrade_plugin_savepoint(true, 2024051000, 'qbank', 'columnsortorder');
+        upgrade_plugin_savepoint(true, 2024042202, 'qbank', 'columnsortorder');
     }
 
     return true;

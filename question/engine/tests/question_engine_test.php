@@ -45,7 +45,6 @@ class question_engine_test extends advanced_testcase {
         global $CFG;
 
         require_once("{$CFG->dirroot}/question/engine/lib.php");
-        parent::setUpBeforeClass();
     }
 
     /**

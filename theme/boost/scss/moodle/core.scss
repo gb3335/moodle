@@ -148,7 +148,7 @@ input[type="image"],
 .sr-only-focusable,
 a.dropdown-toggle,
 .moodle-dialogue-base .closebutton,
-button.btn-close,
+button.close,
 .form-autocomplete-selection,
 [role="treeitem"]:not([aria-expanded="true"]) {
     &.focus,
@@ -2400,10 +2400,6 @@ body.h5p-embed {
     }
 }
 
-#page-contentbank-edit fieldset {
-    margin-top: 1em;
-}
-
 .text-decoration-none {
     text-decoration: none !important; /* stylelint-disable-line declaration-no-important */
 }
@@ -2434,6 +2430,15 @@ body.h5p-embed {
 
 .z-index-1 {
     z-index: 1 !important; /* stylelint-disable-line declaration-no-important */
+}
+
+// These floats are deprecated in Bootstrap 4.3.1. It is still okay to use them in Moodle.
+.float-left {
+    float: left !important; /* stylelint-disable-line declaration-no-important */
+}
+
+.float-right {
+    float: right !important; /* stylelint-disable-line declaration-no-important */
 }
 
 .img-responsive {
@@ -2607,7 +2612,7 @@ $picker-emojis-per-row: 7 !default;
             color: darken(theme-color-level($color, $alert-color-level), 10%);
         }
         // Darken the close button text colour inside notification alerts for better contrast.
-        .btn-close {
+        .close {
             color: darken(theme-color-level($color, $alert-color-level), 20%);
             opacity: 0.6;
         }
@@ -3073,6 +3078,9 @@ blockquote {
 /* Showmore component */
 .showmore-container {
     &.collapsed {
+        .collapsed-content {
+            display: block;
+        }
         .expanded-content {
             display: none;
         }
@@ -3080,6 +3088,9 @@ blockquote {
     &:not(.collapsed) {
         .collapsed-content {
             display: none;
+        }
+        .expanded-content {
+            display: block;
         }
     }
     button {

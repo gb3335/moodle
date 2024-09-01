@@ -66,7 +66,6 @@ class qbank_preview_helper_test extends \advanced_testcase {
      */
     public function setUp(): void {
         global $USER;
-        parent::setUp();
         $this->resetAfterTest();
         $this->setAdminUser();
         $generator = $this->getDataGenerator();

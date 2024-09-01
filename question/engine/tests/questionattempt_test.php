@@ -46,7 +46,6 @@ class questionattempt_test extends \advanced_testcase {
     private $qa;
 
     protected function setUp(): void {
-        parent::setUp();
         $this->question = \test_question_maker::make_question('description');
         $this->question->defaultmark = 3;
         $this->usageid = 13;

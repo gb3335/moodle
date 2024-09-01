@@ -54,7 +54,6 @@ class lib_test extends \advanced_testcase {
      */
     protected function setUp(): void {
         global $USER;
-        parent::setUp();
         $this->setAdminUser();
         $this->usercontext = \context_user::instance($USER->id);
         $repoid = $this->getDataGenerator()->create_repository('recent')->id;

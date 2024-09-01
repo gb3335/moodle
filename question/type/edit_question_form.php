@@ -140,12 +140,7 @@ abstract class question_edit_form extends question_wizard_form {
      * @return string|null default value for a given form element.
      */
     protected function get_default_value(string $name, $default): ?string {
-        global $CFG;
-
-        if (!empty($CFG->questiondefaultssave)) {
-            return question_bank::get_qtype($this->qtype())->get_default_value($name, $default);
-        }
-        return $default;
+        return question_bank::get_qtype($this->qtype())->get_default_value($name, $default);
     }
 
     /**

@@ -40,7 +40,7 @@ require_once("{$CFG->dirroot}/reportbuilder/tests/helpers.php");
  * @copyright   2022 Paul Holden <paulh@moodle.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class users_test extends core_reportbuilder_testcase {
+class users_test extends core_reportbuilder_testcase {
 
     /**
      * Test default datasource
@@ -77,8 +77,6 @@ final class users_test extends core_reportbuilder_testcase {
             'idnumber' => 'U0001',
             'city' => 'London',
             'country' => 'GB',
-            'lang' => 'en',
-            'timezone' => 'Europe/London',
             'theme' => 'boost',
             'interests' => ['Horses'],
         ]);
@@ -100,8 +98,6 @@ final class users_test extends core_reportbuilder_testcase {
         $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:lastname']);
         $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:city']);
         $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:country']);
-        $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:lang']);
-        $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:timezone']);
         $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:description']);
         $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:firstnamephonetic']);
         $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:lastnamephonetic']);
@@ -159,8 +155,6 @@ final class users_test extends core_reportbuilder_testcase {
             $lastname,
             $city,
             $country,
-            $lang,
-            $timezone,
             $description,
             $firstnamephonetic,
             $lastnamephonetic,
@@ -193,8 +187,6 @@ final class users_test extends core_reportbuilder_testcase {
         $this->assertEquals($user->lastname, $lastname);
         $this->assertEquals($user->city, $city);
         $this->assertEquals('United Kingdom', $country);
-        $this->assertEquals('English ‎(en)‎', $lang);
-        $this->assertEquals('Europe/London', $timezone);
         $this->assertEquals($user->description, $description);
         $this->assertEquals($user->firstnamephonetic, $firstnamephonetic);
         $this->assertEquals($user->lastnamephonetic, $lastnamephonetic);
@@ -224,7 +216,7 @@ final class users_test extends core_reportbuilder_testcase {
      *
      * @return array[]
      */
-    public static function datasource_filters_provider(): array {
+    public function datasource_filters_provider(): array {
         return [
             // User.
             'Filter user' => ['user:userselect', [
@@ -334,22 +326,6 @@ final class users_test extends core_reportbuilder_testcase {
             'Filter country (no match)' => ['user:country', [
                 'user:country_operator' => select::EQUAL_TO,
                 'user:country_value' => 'AU',
-            ], false],
-            'Filter lang' => ['user:lang', [
-                'user:lang_operator' => select::EQUAL_TO,
-                'user:lang_value' => 'en',
-            ], true],
-            'Filter lang (no match)' => ['user:lang', [
-                'user:lang_operator' => select::EQUAL_TO,
-                'user:lang_value' => 'de',
-            ], false],
-            'Filter timezone' => ['user:timezone', [
-                'user:timezone_operator' => select::EQUAL_TO,
-                'user:timezone_value' => 'Europe/Barcelona',
-            ], true],
-            'Filter timezone (no match)' => ['user:timezone', [
-                'user:timezone_operator' => select::EQUAL_TO,
-                'user:timezone_value' => 'Australia/Perth',
             ], false],
             'Filter theme' => ['user:theme', [
                 'user:theme_operator' => select::EQUAL_TO,
@@ -511,8 +487,6 @@ final class users_test extends core_reportbuilder_testcase {
             'address' => 'Big Farm',
             'city' => 'Barcelona',
             'country' => 'ES',
-            'lang' => 'en',
-            'timezone' => 'Europe/Barcelona',
             'theme' => 'boost',
             'description' => 'Hello there',
             'moodlenetprofile' => '@zoe1@example.com',

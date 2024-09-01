@@ -30,9 +30,6 @@ $courseindex-item-current: $primary !default;
                 color: $courseindex-link-hover-color;
             }
         }
-        &.draggable {
-            cursor: move;
-        }
     }
 }
 
@@ -161,11 +158,6 @@ $courseindex-item-current: $primary !default;
             .current-badge {
                 display: inline-block;
             }
-
-            /* Skip current badges in delegated sections. */
-            .delegated-section .current-badge {
-                display: none;
-            }
         }
 
         &.dropready .courseindex-item-content {
@@ -177,9 +169,6 @@ $courseindex-item-current: $primary !default;
             .courseindex-item {
                 padding-left: $courseindex-item-padding-x;
             }
-        }
-        &.delegated-section {
-            width: 100%;
         }
     }
 

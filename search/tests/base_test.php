@@ -46,7 +46,6 @@ class base_test extends \advanced_testcase {
     protected $engine = null;
 
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
         set_config('enableglobalsearch', true);
 
@@ -64,7 +63,6 @@ class base_test extends \advanced_testcase {
             $this->generator->teardown();
             $this->generator = null;
         }
-        parent::tearDown();
     }
 
     /**

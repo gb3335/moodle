@@ -1281,12 +1281,7 @@ M.core_filepicker.init = function(Y, options) {
                 var title = selectnode.one('.fp-saveas input').get('value');
                 var filesource = selectnode.one('form #filesource-'+client_id).get('value');
                 var filesourcekey = selectnode.one('form #filesourcekey-'+client_id).get('value');
-                var params = {
-                    'title': title,
-                    'source': filesource,
-                    'savepath': this.options.savepath || '/',
-                    'sourcekey': filesourcekey,
-                };
+                var params = {'title':title, 'source':filesource, 'savepath': this.options.savepath, sourcekey: filesourcekey};
                 var license = selectnode.one('.fp-setlicense select');
                 if (license) {
                     params['license'] = license.get('value');
@@ -1891,7 +1886,7 @@ M.core_filepicker.init = function(Y, options) {
                         scope: scope,
                         action:'upload',
                         client_id: client_id,
-                        params: {'savepath': scope.options.savepath || '/'},
+                        params: {'savepath':scope.options.savepath},
                         repository_id: scope.active_repo.id,
                         form: {id: id, upload:true},
                         onerror: function(id, o, args) {

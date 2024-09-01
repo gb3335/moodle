@@ -121,7 +121,7 @@ class core_renderer extends \core_renderer {
                             'buttontype' => 'message',
                             'title' => get_string('message', 'message'),
                             'url' => new moodle_url('/message/index.php', array('id' => $user->id)),
-                            'image' => 't/message',
+                            'image' => 'message',
                             'linkattributes' => \core_message\helper::messageuser_link_params($user->id),
                             'page' => $this->page
                         )
@@ -158,12 +158,12 @@ class core_renderer extends \core_renderer {
                                 $contacttitle = 'addtoyourcontacts';
                                 $contacturlaction = 'addcontact';
                             }
-                            $contactimage = 't/addcontact';
+                            $contactimage = 'addcontact';
                         } else {
                             // If the user is a contact.
                             $contacttitle = 'removefromyourcontacts';
                             $contacturlaction = 'removecontact';
-                            $contactimage = 't/removecontact';
+                            $contactimage = 'removecontact';
                         }
                         $userbuttons['togglecontact'] = array(
                                 'buttontype' => 'togglecontact',
@@ -209,6 +209,11 @@ class core_renderer extends \core_renderer {
                     $prefix = get_string('modulename', $this->page->activityname);
                 }
             }
+        }
+
+        // Return the heading wrapped in an sr-only element so it is only visible to screen-readers.
+        if (!empty($this->page->layout_options['nocontextheader'])) {
+            return html_writer::div($heading, 'sr-only');
         }
 
         $contextheader = new \context_header($heading, $headinglevel, $imagedata, $userbuttons, $prefix);
