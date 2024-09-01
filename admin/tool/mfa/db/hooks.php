@@ -27,11 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 $callbacks = [
     [
         'hook' => core_user\hook\extend_bulk_user_actions::class,
-        'callback' => [\tool_mfa\local\hooks\extend_bulk_user_actions::class, 'callback'],
+        'callback' => 'tool_mfa\local\hooks\extend_bulk_user_actions::callback',
         'priority' => 0,
-    ],
-    [
-        'hook' => \core\hook\after_config::class,
-        'callback' => [\tool_mfa\hook_callbacks::class, 'after_config'],
     ],
 ];

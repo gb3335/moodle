@@ -34,7 +34,6 @@ class dataset_manager_test extends \advanced_testcase {
      * @return null
      */
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest(true);
 
         $this->sharedtoprows = array(

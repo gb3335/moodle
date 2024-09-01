@@ -263,13 +263,13 @@ class manager {
             (object) [
                 'link'  => helper::get_edit_tour_link(),
                 'linkproperties' => [],
-                'img'   => 'i/tour-new',
+                'img'   => 'b/tour-new',
                 'title' => get_string('newtour', 'tool_usertours'),
             ],
             (object) [
                 'link'  => helper::get_import_tour_link(),
                 'linkproperties' => [],
-                'img'   => 'i/tour-import',
+                'img'   => 'b/tour-import',
                 'title' => get_string('importtour', 'tool_usertours'),
             ],
             (object) [
@@ -277,13 +277,13 @@ class manager {
                 'linkproperties' => [
                         'target' => '_blank',
                     ],
-                'img'   => 'i/tour-shared',
+                'img'   => 'b/tour-shared',
                 'title' => get_string('sharedtourslink', 'tool_usertours'),
             ],
         ];
 
         echo \html_writer::start_tag('div', [
-                'class' => 'tour-actions mt-3',
+                'class' => 'tour-actions',
             ]);
 
         echo \html_writer::start_tag('ul');
@@ -292,7 +292,7 @@ class manager {
             $linkproperties = $config->linkproperties;
             $linkproperties['href'] = $config->link;
             $action .= \html_writer::start_tag('a', $linkproperties);
-            $action .= $OUTPUT->pix_icon($config->img, $config->title, 'tool_usertours', ['class' => 'iconsize-medium']);
+            $action .= $OUTPUT->pix_icon($config->img, $config->title, 'tool_usertours');
             $action .= \html_writer::div($config->title);
             $action .= \html_writer::end_tag('a');
             $action .= \html_writer::end_tag('li');

@@ -38,7 +38,6 @@ class task_test extends \data_privacy_testcase {
      */
     public function tearDown(): void {
         \core_privacy\local\request\writer::reset();
-        parent::tearDown();
     }
 
     /**

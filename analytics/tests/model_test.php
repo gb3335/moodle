@@ -50,7 +50,6 @@ class model_test extends \advanced_testcase {
     protected $modelobj;
 
     public function setUp(): void {
-        parent::setUp();
 
         $this->setAdminUser();
 

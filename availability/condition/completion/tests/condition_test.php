@@ -45,7 +45,6 @@ class condition_test extends \advanced_testcase {
      * Load required classes.
      */
     public function setUp(): void {
-        parent::setUp();
         condition::wipe_static_cache();
     }
 

@@ -53,7 +53,6 @@ class provider_test extends \core_privacy\tests\provider_testcase {
      * Setup function. Will create a user.
      */
     protected function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
 
         $generator = $this->getDataGenerator();

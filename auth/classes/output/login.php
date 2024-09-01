@@ -186,7 +186,6 @@ class login implements renderable, templatable {
         $data->recaptcha = $this->recaptcha;
         $data->togglepassword = $this->togglepassword;
         $data->smallscreensonly = $this->smallscreensonly;
-        $data->showloginform = get_config('core', 'showloginform') === false || get_config('core', 'showloginform');
 
         return $data;
     }

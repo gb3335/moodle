@@ -35,7 +35,6 @@ class manager_test extends provider_testcase {
 
     public function setUp(): void {
         global $CFG;
-        parent::setUp();
         $this->resetAfterTest();
 
         // Pretend the system is enabled.

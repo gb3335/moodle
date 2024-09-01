@@ -48,7 +48,6 @@ Feature: Data export from the privacy API
     And I should see "Awaiting approval" in the "Victim User 1" "table_row"
     And I open the action menu in "Victim User 1" "table_row"
     And I follow "Approve request"
-    And I wait until "Approve request" "button" exists
     And I press "Approve request"
     And I should see "Approved" in the "Victim User 1" "table_row"
     And I run all adhoc tasks
@@ -116,7 +115,6 @@ Feature: Data export from the privacy API
     And I navigate to "Users > Privacy and policies > Data requests" in site administration
     And I open the action menu in "Victim User 1" "table_row"
     And I follow "Approve request"
-    And I wait until "Approve request" "button" exists
     And I press "Approve request"
 
     And I log out

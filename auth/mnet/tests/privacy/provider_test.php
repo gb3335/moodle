@@ -45,7 +45,6 @@ class provider_test extends provider_testcase {
      * Set up method.
      */
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
         $this->setAdminUser();
     }

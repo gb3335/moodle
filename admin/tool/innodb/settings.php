@@ -15,29 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * factor_totp upgrade library.
+ * Link to InnoDB conversion tool
  *
- * @package    factor_totp
- * @copyright  2024 Daniel Ziegenberg <daniel@ziegenberg.at>
+ * @package    tool
+ * @subpackage innodb
+ * @copyright  2010 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-/**
- * Factor totp upgrade helper function
- *
- * @param int $oldversion
- */
-function xmldb_factor_totp_upgrade($oldversion): bool {
-    if ($oldversion < 2024081600) {
+defined('MOODLE_INTERNAL') || die;
 
-        $window = get_config('factor_totp', 'window');
-        if ($window && $window >= 30) {
-            set_config('window', 29, 'factor_totp');
-        }
-
-        // Savepoint reached.
-        upgrade_plugin_savepoint(true, 2024081600, 'factor', 'totp');
-    }
-
-    return true;
+if ($hassiteconfig) {
+    $ADMIN->add('unsupported', new admin_externalpage('toolinnodb', 'Convert to InnoDB', $CFG->wwwroot.'/'.$CFG->admin.'/tool/innodb/index.php', 'moodle/site:config', true));
 }

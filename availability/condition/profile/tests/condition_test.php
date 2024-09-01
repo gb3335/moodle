@@ -37,7 +37,6 @@ class condition_test extends \advanced_testcase {
 
     public function setUp(): void {
         global $DB, $CFG;
-        parent::setUp();
 
         $this->resetAfterTest();
 

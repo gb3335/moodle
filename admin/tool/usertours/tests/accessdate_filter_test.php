@@ -28,7 +28,6 @@ use tool_usertours\local\filter\accessdate;
  */
 class accessdate_filter_test extends \advanced_testcase {
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest(true);
     }
 

@@ -55,7 +55,6 @@ class external_test extends externallib_advanced_testcase {
      */
     public function setUp(): void {
         global $CFG;
-        parent::setUp();
 
         $this->resetAfterTest(true);
         $CFG->registerauth = 'email';
