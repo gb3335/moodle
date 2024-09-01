@@ -34,7 +34,6 @@ class util_test extends \advanced_testcase {
      */
     public function setUp(): void {
         global $DB;
-        parent::setUp();
 
         $this->db = $DB;
         external_settings::reset();
@@ -64,7 +63,6 @@ class util_test extends \advanced_testcase {
             $DB = $this->db;
         }
         external_settings::reset();
-        parent::tearDown();
     }
 
     /**
