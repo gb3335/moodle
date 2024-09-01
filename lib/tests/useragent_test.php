@@ -29,7 +29,6 @@ class useragent_test extends advanced_testcase {
      */
     public function tearDown(): void {
         core_useragent::instance(true);
-        parent::tearDown();
     }
 
     /**
