@@ -87,8 +87,7 @@ class WebDriver extends UpstreamDriver {
             parent::stop();
         } catch (DriverException $e) {
             error_log($e->getMessage());
-            $rcp = new \ReflectionProperty(parent::class, 'webDriver');
-            $rcp->setValue($this, null);
+            $this->webDriver = null;
         }
     }
 }

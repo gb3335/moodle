@@ -13,9 +13,9 @@ using your desired editor and look for the version number of axe-core. Alternati
 - MacOS:
     cat package.json | grep axe-core
 - Linux:
-    cat package.json | grep axe-core
+    cat package.json | grep '"version"' | awk -F '"' '{print $4}'
     or
-    jq -r '.devDependencies."axe-core"' package.json
+    jq -r '.version' package.json
 
 2/ Copy the following file to your local Moodle directory, to replace the old one:
 

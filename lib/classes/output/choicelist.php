@@ -16,6 +16,10 @@
 
 namespace core\output;
 
+use renderable;
+use renderer_base;
+use core\output\named_templatable;
+
 /**
  * A generic user choice output class.
  *
@@ -26,7 +30,8 @@ namespace core\output;
  * @copyright  2023 Ferran Recio <ferran@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class choicelist implements named_templatable, renderable {
+class choicelist implements renderable, named_templatable {
+
     /** @var object[] The user choices. */
     protected $options = [];
 
@@ -97,13 +102,13 @@ class choicelist implements named_templatable, renderable {
      * @return \stdClass[]
      */
     public function get_selectable_options(): array {
-        $selectableoptions = [];
+        $selectableOptions = [];
         foreach ($this->options as $option) {
             if ($option['value'] !== $this->selected && !$option['disabled']) {
-                $selectableoptions[] = (object) $option;
+                $selectableOptions[] = (object) $option;
             }
         }
-        return $selectableoptions;
+        return $selectableOptions;
     }
 
     /**

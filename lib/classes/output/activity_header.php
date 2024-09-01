@@ -17,6 +17,8 @@
 namespace core\output;
 
 use moodle_page;
+use renderer_base;
+use url_select;
 
 /**
  * Data structure representing standard components displayed on the activity header.
@@ -29,7 +31,7 @@ use moodle_page;
  * @package core
  * @category output
  */
-class activity_header implements renderable, templatable {
+class activity_header implements \renderable, \templatable {
     /** @var moodle_page $page The current page we are looking at */
     protected $page;
     /** @var string $title The title to be displayed in the header. Defaults to activityrecord name. */
@@ -64,10 +66,8 @@ class activity_header implements renderable, templatable {
                 $this->title = format_string($page->activityrecord->name);
             }
 
-            if (
-                empty($layoutoptions['nodescription']) && !empty($page->activityrecord->intro) &&
-                    trim($page->activityrecord->intro)
-            ) {
+            if (empty($layoutoptions['nodescription']) && !empty($page->activityrecord->intro) &&
+                    trim($page->activityrecord->intro)) {
                 $this->description = format_module_intro($this->page->activityname, $page->activityrecord, $page->cm->id);
             }
         }

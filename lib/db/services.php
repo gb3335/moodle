@@ -119,25 +119,6 @@ $functions = array(
         'ajax'          => true,
         'loginrequired' => true,
     ),
-    'core_badges_disable_badges' => [
-        'classname'     => 'core_badges\external\disable_badges',
-        'description'   => 'Disable badges',
-        'type'          => 'write',
-        'ajax'          => true,
-    ],
-    'core_badges_enable_badges' => [
-        'classname'     => 'core_badges\external\enable_badges',
-        'description'   => 'Enable badges',
-        'type'          => 'write',
-        'ajax'          => true,
-    ],
-    'core_badges_get_badge' => [
-        'classname'     => 'core_badges\external\get_badge',
-        'description'   => 'Retrieves a badge by id.',
-        'type'          => 'read',
-        'capabilities'  => 'moodle/badges:viewbadges',
-        'services'      => [MOODLE_OFFICIAL_MOBILE_SERVICE],
-    ],
     'core_badges_get_user_badges' => array(
         'classname'     => 'core_badges_external',
         'methodname'    => 'get_user_badges',
@@ -392,8 +373,7 @@ $functions = array(
         'classpath' => 'cohort/externallib.php',
         'description' => 'Deletes all specified cohorts.',
         'type' => 'write',
-        'capabilities' => 'moodle/cohort:manage',
-        'ajax' => true,
+        'capabilities' => 'moodle/cohort:manage'
     ),
     'core_cohort_get_cohort_members' => array(
         'classname' => 'core_cohort_external',
@@ -828,8 +808,7 @@ $functions = array(
         'description' => 'Get the list of potential users to enrol',
         'ajax' => true,
         'type' => 'read',
-        'capabilities' => 'moodle/course:enrolreview',
-        'readonlysession' => true,
+        'capabilities' => 'moodle/course:enrolreview'
     ),
     'core_enrol_search_users' => [
         'classname' => 'core_enrol_external',
@@ -2027,20 +2006,6 @@ $functions = array(
         'capabilities' => 'moodle/user:manageownfiles',
         'services' => array(MOODLE_OFFICIAL_MOBILE_SERVICE),
     ),
-    'core_user_prepare_private_files_for_edition' => [
-        'classname'     => '\core_user\external\prepare_private_files_for_edition',
-        'description'   => 'Prepares the draft area for user private files.',
-        'type'          => 'write',
-        'capabilities'  => 'moodle/user:manageownfiles',
-        'services'      => [MOODLE_OFFICIAL_MOBILE_SERVICE],
-    ],
-    'core_user_update_private_files' => [
-        'classname'     => '\core_user\external\update_private_files',
-        'description'   => 'Copy files from a draft area to users private files area.',
-        'type'          => 'write',
-        'capabilities'  => 'moodle/user:manageownfiles',
-        'services'      => [MOODLE_OFFICIAL_MOBILE_SERVICE],
-    ],
 
     // Competencies functions.
     'core_competency_create_competency_framework' => array(
@@ -2839,7 +2804,8 @@ $functions = array(
 
     // Filters functions.
     'core_filters_get_available_in_context' => array(
-        'classname'   => 'core_filters\external\get_available_in_context',
+        'classname'   => 'core_filters\external',
+        'methodname'  => 'get_available_in_context',
         'description' => 'Returns the filters available in the given contexts.',
         'type'        => 'read',
         'services'    => array(MOODLE_OFFICIAL_MOBILE_SERVICE),
@@ -3228,14 +3194,6 @@ $functions = array(
         'description' => 'Send course to MoodleNet',
         'type'        => 'read',
         'ajax'        => true,
-    ],
-    'core_output_poll_stored_progress' => [
-        'classname'   => 'core\external\output\poll_stored_progress',
-        'methodname'  => 'execute',
-        'description' => 'Polls for the current percentage progress of a stored progress object',
-        'type'        => 'read',
-        'ajax'        => true,
-        'readonlysession' => true,
     ],
 );
 
