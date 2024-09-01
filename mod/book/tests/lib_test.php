@@ -42,7 +42,6 @@ require_once($CFG->dirroot . '/mod/book/lib.php');
 class lib_test extends \advanced_testcase {
 
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
         $this->setAdminUser();
     }

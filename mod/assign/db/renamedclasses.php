@@ -14,26 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace mod_assign\task;
-
-use core\task\adhoc_task;
-use mod_assign\notification_helper;
-
 /**
- * Ad-hoc task to send a notification to a user about an overdue assignment.
+ * This file contains mappings for classes that have been renamed.
  *
  * @package    mod_assign
- * @copyright  2024 David Woloszyn <david.woloszyn@moodle.com>
+ * @copyright  2021 Catalyst IT Australia Pty Ltd
+ * @author     Cameron Ball <cameron@cameron1729.xyz>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class send_assignment_overdue_notification_to_user extends adhoc_task {
 
-    /**
-     * Execute the task.
-     */
-    public function execute(): void {
-        $assignmentid = $this->get_custom_data()->assignmentid;
-        $userid = $this->get_custom_data()->userid;
-        notification_helper::send_overdue_notification_to_user($assignmentid, $userid);
-    }
-}
+defined('MOODLE_INTERNAL') || die();
+
+$renamedclasses = [
+    // Since Moodle 4.1.
+    'mod_assign\local\views\secondary' => 'mod_assign\navigation\views\secondary',
+];

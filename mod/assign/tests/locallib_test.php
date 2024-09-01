@@ -401,7 +401,7 @@ class locallib_test extends \advanced_testcase {
         $document = new \DOMDocument();
         @$document->loadHTML($output);
         $xpath = new \DOMXPath($document);
-        $this->assertEmpty($xpath->evaluate('string(//td[@id="mod_assign_grading-' . $assign->get_context()->id. '_r0_c6"])'));
+        $this->assertEmpty($xpath->evaluate('string(//td[@id="mod_assign_grading-' . $assign->get_context()->id. '_r0_c8"])'));
     }
 
     /**
@@ -477,25 +477,25 @@ class locallib_test extends \advanced_testcase {
 
         // Check status.
         $this->assertSame(get_string('submissionstatus_submitted', 'assign'),
-            $xpath->evaluate('string(//td[@id="' . $xpathuniqueidroot . '_r0_c3"]//div[@class="submissionstatussubmitted"])'));
+            $xpath->evaluate('string(//td[@id="' . $xpathuniqueidroot . '_r0_c4"]/div[@class="submissionstatussubmitted"])'));
         $this->assertSame(get_string('submissionstatus_submitted', 'assign'),
-            $xpath->evaluate('string(//td[@id="' . $xpathuniqueidroot . '_r3_c3"]//div[@class="submissionstatussubmitted"])'));
+            $xpath->evaluate('string(//td[@id="' . $xpathuniqueidroot . '_r3_c4"]/div[@class="submissionstatussubmitted"])'));
 
         // Check submission last modified date.
-        $this->assertGreaterThan(0, strtotime($xpath->evaluate('string(//td[@id="' . $xpathuniqueidroot . '_r0_c6"])')));
-        $this->assertGreaterThan(0, strtotime($xpath->evaluate('string(//td[@id="' . $xpathuniqueidroot . '_r3_c6"])')));
+        $this->assertGreaterThan(0, strtotime($xpath->evaluate('string(//td[@id="' . $xpathuniqueidroot . '_r0_c8"])')));
+        $this->assertGreaterThan(0, strtotime($xpath->evaluate('string(//td[@id="' . $xpathuniqueidroot . '_r3_c8"])')));
 
         // Check group.
-        $this->assertSame($group->name, $xpath->evaluate('string(//td[@id="' . $xpathuniqueidroot . '_r0_c4"])'));
-        $this->assertSame($group->name, $xpath->evaluate('string(//td[@id="' . $xpathuniqueidroot . '_r3_c4"])'));
+        $this->assertSame($group->name, $xpath->evaluate('string(//td[@id="' . $xpathuniqueidroot . '_r0_c5"])'));
+        $this->assertSame($group->name, $xpath->evaluate('string(//td[@id="' . $xpathuniqueidroot . '_r3_c5"])'));
 
         // Check submission text.
-        $this->assertSame('Submission text', $xpath->evaluate('string(//td[@id="' . $xpathuniqueidroot . '_r0_c7"]/div/div)'));
-        $this->assertSame('Submission text', $xpath->evaluate('string(//td[@id="' . $xpathuniqueidroot . '_r3_c7"]/div/div)'));
+        $this->assertSame('Submission text', $xpath->evaluate('string(//td[@id="' . $xpathuniqueidroot . '_r0_c9"]/div/div)'));
+        $this->assertSame('Submission text', $xpath->evaluate('string(//td[@id="' . $xpathuniqueidroot . '_r3_c9"]/div/div)'));
 
         // Check comments can be made.
-        $this->assertEquals(1, $xpath->evaluate('count(//td[@id="' . $xpathuniqueidroot . '_r0_c8"]//textarea)'));
-        $this->assertEquals(1, $xpath->evaluate('count(//td[@id="' . $xpathuniqueidroot . '_r3_c8"]//textarea)'));
+        $this->assertEquals(1, $xpath->evaluate('count(//td[@id="' . $xpathuniqueidroot . '_r0_c10"]//textarea)'));
+        $this->assertEquals(1, $xpath->evaluate('count(//td[@id="' . $xpathuniqueidroot . '_r3_c10"]//textarea)'));
     }
 
     public function test_show_intro(): void {
@@ -2759,66 +2759,6 @@ class locallib_test extends \advanced_testcase {
     }
 
     /**
-     * Test reopen behavior when in "Automatic" mode.
-     *
-     * @coversNothing
-     */
-    public function test_attempt_reopen_method_automatic(): void {
-        global $PAGE;
-
-        $this->resetAfterTest();
-        $course = $this->getDataGenerator()->create_course();
-        $student = $this->getDataGenerator()->create_and_enrol($course, 'student');
-        $teacher = $this->getDataGenerator()->create_and_enrol($course, 'teacher');
-
-        $assign = $this->create_instance($course, [
-            'attemptreopenmethod' => ASSIGN_ATTEMPT_REOPEN_METHOD_AUTOMATIC,
-            'maxattempts' => 3,
-            'submissiondrafts' => 1,
-            'assignsubmission_onlinetext_enabled' => 1,
-        ]);
-        $PAGE->set_url(new \moodle_url('/mod/assign/view.php', ['id' => $assign->get_course_module()->id]));
-
-        // Set grade to pass to 80.
-        $gradeitem = $assign->get_grade_item();
-        $gradeitem->gradepass = '80.0';
-        $gradeitem->update();
-
-        // Student should be able to see an add submission button.
-        $this->setUser($student);
-        $output = $assign->view_submission_action_bar($assign->get_instance(), $student);
-        $this->assertNotEquals(false, strpos($output, get_string('addsubmission', 'assign')));
-
-        // Add a submission as a student.
-        $this->add_submission($student, $assign);
-        $this->submit_for_grading($student, $assign);
-
-        // Verify the student cannot make a new attempt.
-        $output = $assign->view_student_summary($student, true);
-        $this->assertEquals(false, strpos($output, get_string('addnewattempt', 'assign')));
-
-        // Mark the submission as non-passing.
-        $this->mark_submission($teacher, $assign, $student, 50.0);
-
-        // Check the student now has a button for Add a new attempt.
-        $this->setUser($student);
-        $output = $assign->view_submission_action_bar($assign->get_instance(), $student);
-        $this->assertNotEquals(false, strpos($output, get_string('addnewattempt', 'assign')));
-
-        // Add a second submission.
-        $this->add_submission($student, $assign);
-        $this->submit_for_grading($student, $assign);
-
-        // Mark the submission as passing.
-        $this->mark_submission($teacher, $assign, $student, 80.0, [], 1);
-
-        // Check the student now has a button for Add a new attempt.
-        $this->setUser($student);
-        $output = $assign->view_submission_action_bar($assign->get_instance(), $student);
-        $this->assertNotEquals(false, strpos($output, get_string('addnewattempt', 'assign')));
-    }
-
-    /**
      * Test student visibility for each stage of the marking workflow.
      */
     public function test_markingworkflow(): void {
@@ -3806,7 +3746,6 @@ Anchor link 2:<a title=\"bananas\" href=\"../logo-240x60.gif\">Link text</a>
         $teacher->ignoresesskey = true;
         $this->setUser($teacher);
         $assign = $this->create_instance($course, [
-                'maxattempts' => ASSIGN_UNLIMITED_ATTEMPTS,
                 'attemptreopenmethod' => ASSIGN_ATTEMPT_REOPEN_METHOD_MANUAL,
             ]);
 

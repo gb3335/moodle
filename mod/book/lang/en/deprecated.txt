@@ -1,4 +1,3 @@
 navimages,mod_book
 navtext,mod_book
 navtoc,mod_book
-tagsdeleted,mod_book

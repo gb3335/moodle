@@ -36,7 +36,6 @@ namespace mod_book\event;
 class events_test extends \advanced_testcase {
 
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
     }
 

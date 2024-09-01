@@ -16,7 +16,6 @@ Feature: In an assignment, students start a new attempt based on their previous 
       | intro                               | Submit your online text |
       | assignsubmission_onlinetext_enabled | 1                       |
       | assignsubmission_file_enabled       | 0                       |
-      | maxattempts                         | -1                      |
       | attemptreopenmethod                 | manual                  |
       | hidegrader                          | 1                       |
       | submissiondrafts                    | 0                       |
@@ -33,10 +32,8 @@ Feature: In an assignment, students start a new attempt based on their previous 
       | Test assignment name  | student1  | I'm the student first submission |
 
     And I am on the "Test assignment name" Activity page logged in as teacher1
-    And I navigate to "Submissions" in current page administration
-    And I change window size to "large"
+    And I follow "View all submissions"
     And I click on "Grade" "link" in the "Student 1" "table_row"
-    And I change window size to "medium"
     And I set the following fields to these values:
       | Allow another attempt | 1 |
     And I press "Save changes"
@@ -50,10 +47,8 @@ Feature: In an assignment, students start a new attempt based on their previous 
     And I log out
 
     And I am on the "Test assignment name" Activity page logged in as teacher1
-    And I navigate to "Submissions" in current page administration
-    And I change window size to "large"
+    And I follow "View all submissions"
     And I click on "Grade" "link" in the "Student 1" "table_row"
-    And I change window size to "medium"
     And I should see "I'm the student first submission"
 
   @javascript @_alert
@@ -103,7 +98,7 @@ Feature: In an assignment, students start a new attempt based on their previous 
       | Test assignment name  | student1  | I'm the student first submission  |
 
     And I am on the "Test assignment name" Activity page logged in as teacher1
-    When I navigate to "Submissions" in current page administration
+    When I follow "View all submissions"
     Then "Student 1" row "Status" column of "generaltable" table should contain "Submitted for grading"
     And "Student 2" row "Status" column of "generaltable" table should contain "Submitted for grading"
     And "Student 3" row "Status" column of "generaltable" table should contain "No submission"
@@ -129,7 +124,7 @@ Feature: In an assignment, students start a new attempt based on their previous 
     And I log out
 
     And I am on the "Test assignment name" Activity page logged in as teacher1
-    And I navigate to "Submissions" in current page administration
+    And I follow "View all submissions"
     And "Student 1" row "Status" column of "generaltable" table should contain "Reopened"
     And "Student 2" row "Status" column of "generaltable" table should contain "Reopened"
     And "Student 3" row "Status" column of "generaltable" table should contain "Submitted for grading"

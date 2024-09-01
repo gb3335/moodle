@@ -46,7 +46,6 @@ class extension_test extends \advanced_testcase {
      * @return void
      */
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest(true);
         $this->setup_fake_plugin('simple');
         $this->resetDebugging(); // We might have debugging messages issued from setup_fake_plugin here that we need to get rid of.
@@ -60,7 +59,6 @@ class extension_test extends \advanced_testcase {
      */
     public function tearDown(): void {
         $this->uninstall_fake_plugin('simple');
-        parent::tearDown();
     }
 
     /**

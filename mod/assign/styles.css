@@ -123,10 +123,6 @@
     background-color: #efcfcf;
 }
 
-.path-mod-assign div.dropdown.extrafilters .dropdown-menu {
-    width: 300px;
-}
-
 .path-mod-assign .gradingtable .c0 {
     display: none;
 }
@@ -141,15 +137,6 @@
 
 .path-mod-assign.jsenabled .gradingbatchoperationsform {
     display: block;
-}
-
-.path-mod-assign .gradingtable table {
-    border-collapse: separate;
-    border-spacing: 0;
-}
-
-.path-mod-assign .gradingtable thead th {
-    background-color: white;
 }
 
 .path-mod-assign .gradingtable tr.selectedrow td {
@@ -295,10 +282,6 @@
 }
 
 .path-mod-assign .gradingtable .moodle-actionmenu {
-    white-space: nowrap;
-}
-
-.path-mod-assign .gradingtable .username .d-inline-block {
     white-space: nowrap;
 }
 

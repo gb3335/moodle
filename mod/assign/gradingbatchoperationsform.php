@@ -62,10 +62,7 @@ class mod_assign_grading_batch_operations_form extends moodleform {
         if ($instance['duedate'] && has_capability('mod/assign:grantextension', $instance['context'])) {
             $options['grantextension'] = get_string('grantextension', 'assign');
         }
-        $multipleattemptsallowed = $instance['maxattempts'] > 1 ||
-            $instance['maxattempts'] == ASSIGN_UNLIMITED_ATTEMPTS;
-
-        if ($multipleattemptsallowed && $instance['attemptreopenmethod'] == ASSIGN_ATTEMPT_REOPEN_METHOD_MANUAL) {
+        if ($instance['attemptreopenmethod'] == ASSIGN_ATTEMPT_REOPEN_METHOD_MANUAL) {
             $options['addattempt'] = get_string('addattempt', 'assign');
         }
 
