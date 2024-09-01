@@ -34,7 +34,6 @@ if (!defined('MAX_MODINFO_CACHE_SIZE')) {
 
 use core_courseformat\output\activitybadge;
 use core_courseformat\sectiondelegate;
-use core_courseformat\sectiondelegatemodule;
 
 /**
  * Information about a course that is cached in the course table 'modinfo' field (and then in
@@ -95,12 +94,6 @@ class course_modinfo {
     private $delegatedsections;
 
     /**
-     * Index of sections delegated by course modules, indexed by course module instance.
-     * @var null|section_info[]
-     */
-    private ?array $delegatedbycm = null;
-
-    /**
      * User ID
      * @var int
      */
@@ -146,7 +139,6 @@ class course_modinfo {
         'cms' => 'get_cms',
         'instances' => 'get_instances',
         'groups' => 'get_groups_all',
-        'delegatedbycm' => 'get_sections_delegated_by_cm',
     );
 
     /**
@@ -416,33 +408,6 @@ class course_modinfo {
      */
     public function has_delegated_sections(): bool {
         return !empty($this->delegatedsections);
-    }
-
-    /**
-     * Gets data about section delegated by course modules.
-     *
-     * @return section_info[] sections array indexed by course module ID
-     */
-    public function get_sections_delegated_by_cm(): array {
-        if (!is_null($this->delegatedbycm)) {
-            return $this->delegatedbycm;
-        }
-        $this->delegatedbycm = [];
-        foreach ($this->delegatedsections as $componentsections) {
-            foreach ($componentsections as $section) {
-                $delegateinstance = $section->get_component_instance();
-                // We only return sections delegated by course modules. Sections delegated to other
-                // types of components must implement their own methods to get the section.
-                if (!$delegateinstance || !($delegateinstance instanceof sectiondelegatemodule)) {
-                    continue;
-                }
-                if (!$cm = $delegateinstance->get_cm()) {
-                    continue;
-                }
-                $this->delegatedbycm[$cm->id] = $section;
-            }
-        }
-        return $this->delegatedbycm;
     }
 
     /**
@@ -2206,19 +2171,6 @@ class cm_info implements IteratorAggregate {
         return $cmrecord;
     }
 
-    /**
-     * Returns the section delegated by this module, if any.
-     *
-     * @return ?section_info
-     */
-    public function get_delegated_section_info(): ?section_info {
-        $delegatedsections = $this->modinfo->get_sections_delegated_by_cm();
-        if (!array_key_exists($this->id, $delegatedsections)) {
-            return null;
-        }
-        return $delegatedsections[$this->id];
-    }
-
     // Set functions
     ////////////////
 
@@ -2650,13 +2602,10 @@ class cm_info implements IteratorAggregate {
             $this->availableinfo = '';
         }
 
-        $capabilities = [
-            'moodle/course:manageactivities',
-            'moodle/course:activityvisibility',
-            'moodle/course:viewhiddenactivities',
-        ];
         $this->uservisibleoncoursepage = $this->uservisible &&
-            ($this->visibleoncoursepage || has_any_capability($capabilities, $this->get_context(), $userid));
+            ($this->visibleoncoursepage ||
+                has_capability('moodle/course:manageactivities', $this->get_context(), $userid) ||
+                has_capability('moodle/course:activityvisibility', $this->get_context(), $userid));
         // Activity that is not available, not hidden from course page and has availability
         // info is actually visible on the course page (with availability info and without a link).
         if (!$this->uservisible && $this->visibleoncoursepage && $this->availableinfo) {
@@ -3472,10 +3421,6 @@ class section_info implements IteratorAggregate {
             $this->_available = $ci->is_available($this->_availableinfo, true,
                     $userid, $this->modinfo);
         }
-
-        if ($this->_available) {
-            $this->_available = $this->check_delegated_available();
-        }
         // Execute the hook from the course format that may override the available/availableinfo properties.
         $currentavailable = $this->_available;
         course_get_format($this->modinfo->get_course())->
@@ -3485,29 +3430,6 @@ class section_info implements IteratorAggregate {
             $this->_available = $currentavailable;
         }
         return $this->_available;
-    }
-
-    /**
-     * Check if the delegated component is available.
-     *
-     * @return bool
-     */
-    private function check_delegated_available(): bool {
-        /** @var sectiondelegatemodule $sectiondelegate */
-        $sectiondelegate = $this->get_component_instance();
-        if (!$sectiondelegate) {
-            return true;
-        }
-
-        if ($sectiondelegate instanceof sectiondelegatemodule) {
-            $parentcm = $sectiondelegate->get_cm();
-            if (!$parentcm->available) {
-                return false;
-            }
-            return $parentcm->get_section_info()->available;
-        }
-
-        return true;
     }
 
     /**
@@ -3557,12 +3479,6 @@ class section_info implements IteratorAggregate {
             // Has already been calculated or does not need calculation.
             return $this->_uservisible;
         }
-
-        if (!$this->check_delegated_uservisible()) {
-            $this->_uservisible = false;
-            return $this->_uservisible;
-        }
-
         $this->_uservisible = true;
         if (!$this->_visible || !$this->get_available()) {
             $coursecontext = context_course::instance($this->get_course());
@@ -3574,30 +3490,6 @@ class section_info implements IteratorAggregate {
             }
         }
         return $this->_uservisible;
-    }
-
-    /**
-     * Check if the delegated component is user visible.
-     *
-     * @return bool
-     */
-    private function check_delegated_uservisible(): bool {
-        /** @var sectiondelegatemodule $sectiondelegate */
-        $sectiondelegate = $this->get_component_instance();
-        if (!$sectiondelegate) {
-            return true;
-        }
-
-        if ($sectiondelegate instanceof sectiondelegatemodule) {
-            $parentcm = $sectiondelegate->get_cm();
-            if (!$parentcm->uservisible) {
-                return false;
-            }
-            $result = $parentcm->get_section_info()->uservisible;
-            return $result;
-        }
-
-        return true;
     }
 
     /**

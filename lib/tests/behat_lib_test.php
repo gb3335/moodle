@@ -42,7 +42,6 @@ class behat_lib_test extends advanced_testcase {
      */
     public function setUp(): void {
         global $CFG;
-        parent::setUp();
 
         if (empty($CFG->behat_wwwroot) || empty($CFG->behat_dataroot) || empty($CFG->behat_prefix)) {
             $this->markTestSkipped('Behat not configured');
