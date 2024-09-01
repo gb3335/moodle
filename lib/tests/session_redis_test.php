@@ -51,7 +51,6 @@ class session_redis_test extends \advanced_testcase {
 
     public function setUp(): void {
         global $CFG;
-        parent::setUp();
 
         if (!extension_loaded('redis')) {
             $this->markTestSkipped('Redis extension not loaded.');
@@ -62,9 +61,8 @@ class session_redis_test extends \advanced_testcase {
         $version = phpversion('Redis');
         if (!$version) {
             $this->markTestSkipped('Redis extension version missing');
-        } else if (version_compare($version, \core\session\redis::REDIS_EXTENSION_MIN_VERSION) <= 0) {
-            $this->markTestSkipped('Redis extension version must be at least ' . \core\session\redis::REDIS_EXTENSION_MIN_VERSION .
-                ': now running "' . $version . '"');
+        } else if (version_compare($version, '2.0') <= 0) {
+            $this->markTestSkipped('Redis extension version must be at least 2.0: now running "' . $version . '"');
         }
 
         $this->resetAfterTest();
@@ -110,7 +108,6 @@ class session_redis_test extends \advanced_testcase {
             $this->redis->del($keyname);
         }
         $this->redis->close();
-        parent::tearDown();
     }
 
     public function test_normal_session_read_only(): void {

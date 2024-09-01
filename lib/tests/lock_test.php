@@ -30,7 +30,6 @@ class lock_test extends \advanced_testcase {
      * Some lock types will store data in the database.
      */
     protected function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest(true);
     }
 

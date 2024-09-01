@@ -24,7 +24,6 @@ use TCPDF_STATIC;
  * @package    core
  * @copyright  2021 Brendan Heywood (brendan@catalyst-au.net)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers \pdf
  */
 class pdflib_test extends \advanced_testcase {
 
@@ -71,7 +70,7 @@ class pdflib_test extends \advanced_testcase {
     /**
      * Test get_export_fontlist function.
      *
-     * @covers \pdf::get_export_fontlist
+     * @covers ::get_export_fontlist
      *
      * @return void
      */

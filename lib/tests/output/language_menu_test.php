@@ -32,7 +32,6 @@ class language_menu_test extends \advanced_testcase {
      */
     public function setUp(): void {
         global $PAGE;
-        parent::setUp();
         $this->resetAfterTest();
         $PAGE->set_url('/');
     }

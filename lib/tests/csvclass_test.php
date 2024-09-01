@@ -41,7 +41,6 @@ class csvclass_test extends \advanced_testcase {
     protected $teststring4 = '';
 
     protected function setUp(): void {
-        parent::setUp();
 
         $this->resetAfterTest();
 

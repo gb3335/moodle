@@ -44,7 +44,6 @@ class contentbank_content_updated_test extends \advanced_testcase {
 
         require_once($CFG->dirroot . '/contentbank/tests/fixtures/testable_contenttype.php');
         require_once($CFG->dirroot . '/contentbank/tests/fixtures/testable_content.php');
-        parent::setUpBeforeClass();
     }
 
     /**

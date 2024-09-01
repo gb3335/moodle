@@ -32,6 +32,8 @@ class media_test extends advanced_testcase {
 
     /**
      * Test the get_enabled_plugins method.
+     *
+     * @covers ::get_enabled_plugins
      */
     public function test_get_enabled_plugins(): void {
         $this->resetAfterTest();

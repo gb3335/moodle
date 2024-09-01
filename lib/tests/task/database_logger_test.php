@@ -36,7 +36,6 @@ class database_logger_test extends \advanced_testcase {
      */
     public function setUp(): void {
         global $DB;
-        parent::setUp();
 
         $this->DB = $DB;
     }
@@ -49,7 +48,6 @@ class database_logger_test extends \advanced_testcase {
 
         $DB = $this->DB;
         $this->DB = null;
-        parent::tearDown();
     }
 
     /**
