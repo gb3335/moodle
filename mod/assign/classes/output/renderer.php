@@ -675,8 +675,7 @@ class renderer extends \plugin_renderer_base {
             $this->add_table_row_tuple($t, $cell1content, $cell2content);
         }
 
-        // If multiple attempts are allowed.
-        if ($status->maxattempts > 1 || $status->maxattempts == ASSIGN_UNLIMITED_ATTEMPTS) {
+        if ($status->attemptreopenmethod != ASSIGN_ATTEMPT_REOPEN_METHOD_NONE) {
             $currentattempt = 1;
             if (!$status->teamsubmissionenabled) {
                 if ($status->submission) {

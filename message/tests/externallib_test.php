@@ -45,7 +45,6 @@ class externallib_test extends externallib_advanced_testcase {
         global $CFG;
 
         require_once($CFG->dirroot . '/message/lib.php');
-        parent::setUp();
     }
 
     /**
