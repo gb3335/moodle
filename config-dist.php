@@ -38,12 +38,12 @@ $CFG = new stdClass();
 // will be stored.  This database must already have been created         //
 // and a username/password created to access it.                         //
 
-$CFG->dbtype    = 'pgsql';      // 'pgsql', 'mariadb', 'mysqli', 'auroramysql', 'sqlsrv' or 'oci'
+$CFG->dbtype    = 'auroramysql';      // 'pgsql', 'mariadb', 'mysqli', 'auroramysql', 'sqlsrv' or 'oci'
 $CFG->dblibrary = 'native';     // 'native' only at the moment
-$CFG->dbhost    = 'localhost';  // eg 'localhost' or 'db.isp.com' or IP
+$CFG->dbhost    = 'osmosis-uat-aurora.cluster-cenvsqjxkpnr.ap-southeast-1.rds.amazonaws.com';  // eg 'localhost' or 'db.isp.com' or IP
 $CFG->dbname    = 'moodle';     // database name, eg moodle
-$CFG->dbuser    = 'username';   // your database username
-$CFG->dbpass    = 'password';   // your database password
+$CFG->dbuser    = 'admin';   // your database username
+$CFG->dbpass    = 'I0uQ4y(i}s27YU02B3enAZ%4d7EP';   // your database password
 $CFG->prefix    = 'mdl_';       // prefix to use for all table names
 $CFG->dboptions = array(
     'dbpersist' => false,       // should persistent database connections be
@@ -180,14 +180,6 @@ $CFG->wwwroot   = 'http://example.com/moodle';
 
 $CFG->dataroot  = '/home/example/moodledata';
 
-// Whether the Moodle router is fully configured.
-//
-// From Moodle 4.5 this is set to false.
-// The default value will change in a future release.
-//
-// When not configured on the web server it must be accessed via https://example.com/moodle/r.php
-// When configured the on the web server the 'r.php' may be removed.
-$CFG->routerconfigured = false;
 
 //=========================================================================
 // 4. DATA FILES PERMISSIONS
@@ -336,7 +328,7 @@ $CFG->admin = 'admin';
 //
 //
 // Following settings may be used to select session driver, uncomment only one of the handlers.
-//   Database session handler:
+//   Database session handler (not compatible with MyISAM):
 //      $CFG->session_handler_class = '\core\session\database';
 //      $CFG->session_database_acquire_lock_timeout = 120;
 //
@@ -729,7 +721,7 @@ $CFG->admin = 'admin';
 //
 // Uninstall plugins from CLI only. This stops admins from uninstalling plugins from the graphical admin
 // user interface, and forces plugins to be uninstalled from the Command Line tool only, found at
-// admin/cli/uninstall_plugins.php.
+// admin/cli/plugin_uninstall.php.
 //
 //      $CFG->uninstallclionly = true;
 //
@@ -781,15 +773,6 @@ $CFG->admin = 'admin';
 // Defaults to 60 minutes.
 //
 //      $CFG->enrolments_sync_interval = 3600
-//
-// Stored progress polling interval
-//
-// Stored progress bars which can be polled for updates via AJAX can be controlled by the
-// `progresspollinterval` config setting, to determine the interval (in seconds) at which the
-// polling should be done and latest update retrieved.
-// If no value is set, then it will default to 5 seconds.
-//
-// $CFG->progresspollinterval = 5;
 
 //=========================================================================
 // 7. SETTINGS FOR DEVELOPMENT SERVERS - not intended for production use!!!

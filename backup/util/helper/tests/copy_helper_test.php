@@ -65,7 +65,6 @@ class copy_helper_test extends \advanced_testcase {
      */
     protected function setUp(): void {
         global $DB, $CFG, $USER;
-        parent::setUp();
 
         $this->resetAfterTest(true);
 

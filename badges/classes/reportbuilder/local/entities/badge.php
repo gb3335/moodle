@@ -175,11 +175,13 @@ class badge extends base {
             ->add_join("LEFT JOIN {context} {$contextalias}
                     ON {$contextalias}.contextlevel = " . CONTEXT_COURSE . "
                    AND {$contextalias}.instanceid = {$badgealias}.courseid")
+            ->set_type(column::TYPE_INTEGER)
             ->add_fields("{$badgealias}.id, {$badgealias}.type, {$badgealias}.courseid")
             ->add_field($DB->sql_cast_to_char("{$badgealias}.imagecaption"), 'imagecaption')
             ->add_fields(context_helper::get_preload_record_columns_sql($contextalias))
-            ->add_callback(static function($value, stdClass $badge): string {
-                if ($badge->id === null) {
+            ->set_disabled_aggregation_all()
+            ->add_callback(static function(?int $badgeid, stdClass $badge): string {
+                if (!$badgeid) {
                     return '';
                 }
                 if ($badge->type == BADGE_TYPE_SITE) {
@@ -189,7 +191,7 @@ class badge extends base {
                     $context = context_course::instance($badge->courseid);
                 }
 
-                $badgeimage = moodle_url::make_pluginfile_url($context->id, 'badges', 'badgeimage', $badge->id, '/', 'f2');
+                $badgeimage = moodle_url::make_pluginfile_url($context->id, 'badges', 'badgeimage', $badgeid, '/', 'f2');
                 return html_writer::img($badgeimage, $badge->imagecaption);
             });
 
@@ -205,7 +207,7 @@ class badge extends base {
             ->set_is_sortable(true)
             ->add_callback(static function($language): string {
                 $languages = get_string_manager()->get_list_of_languages();
-                return (string) ($languages[$language] ?? $language);
+                return $languages[$language] ?? $language ?? '';
             });
 
         // Version.
@@ -324,17 +326,17 @@ class badge extends base {
             ]);
 
         // Expiry date/period.
-        $paramtime = database::generate_param_name();
+        [$parammaxint, $paramtime] = database::generate_param_names(2);
         $filters[] = (new filter(
             date::class,
             'expiry',
             new lang_string('expirydate', 'core_badges'),
             $this->get_entity_name(),
             "CASE WHEN {$badgealias}.expiredate IS NULL AND {$badgealias}.expireperiod IS NULL
-                  THEN " . SQL_INT_MAX . "
+                  THEN " . $DB->sql_cast_char2int(":{$parammaxint}") . "
                   ELSE COALESCE({$badgealias}.expiredate, {$badgealias}.expireperiod + :{$paramtime})
              END",
-            [$paramtime => time()]
+            [$parammaxint => 2147483647, $paramtime => time()]
         ))
             ->add_joins($this->get_joins())
             ->set_limited_operators([

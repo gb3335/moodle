@@ -22,7 +22,7 @@ namespace core_courseformat;
  * @package    core_courseformat
  * @copyright  2023 Ferran Recio <ferran@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @coversDefaultClass \core_courseformat\formatactions
+ * @coversDefaultClass \core_courseformat\base
  */
 class formatactions_test extends \advanced_testcase {
 
@@ -35,7 +35,6 @@ class formatactions_test extends \advanced_testcase {
         require_once($CFG->dirroot . '/course/format/tests/fixtures/format_theunittest_courseactions.php');
         require_once($CFG->dirroot . '/course/format/tests/fixtures/format_theunittest_sectionactions.php');
         require_once($CFG->dirroot . '/course/format/tests/fixtures/format_theunittest_cmactions.php');
-        parent::setUpBeforeClass();
     }
 
     /**

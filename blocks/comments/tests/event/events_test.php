@@ -44,7 +44,6 @@ class events_test extends \advanced_testcase {
      * Setup test data.
      */
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
         $this->setAdminUser();
 

@@ -59,7 +59,6 @@ Bobby,Bunce,,"Moodle HQ","Rock on!",student5@example.com,75.00,,75.00,{exportdat
 
     public function tearDown(): void {
         $this->csvimport = null;
-        parent::tearDown();
     }
 
     /**

@@ -91,10 +91,9 @@ if (!has_any_capability(array(
 $PAGE->set_title($hdr);
 $output = $PAGE->get_renderer('core', 'badges');
 
-if ($delete || $archive) {
+if (($delete || $archive) && has_capability('moodle/badges:deletebadge', $PAGE->context)) {
     $badgeid = ($archive != 0) ? $archive : $delete;
     $badge = new badge($badgeid);
-    require_capability('moodle/badges:deletebadge', $badge->get_context());
     if (!$confirm) {
         echo $output->header();
         // Archive this badge?
@@ -162,6 +161,5 @@ $report = system_report_factory::create(badges::class, $PAGE->context);
 $report->set_default_no_results_notice(new lang_string('nobadges', 'badges'));
 
 echo $report->output();
-$PAGE->requires->js_call_amd('core_badges/actions', 'init');
 
 echo $OUTPUT->footer();

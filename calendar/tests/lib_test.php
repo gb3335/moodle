@@ -32,14 +32,12 @@ class lib_test extends \advanced_testcase {
         global $CFG;
 
         require_once("{$CFG->dirroot}/calendar/tests/helpers.php");
-        parent::setUpBeforeClass();
     }
 
     /**
      * Tests set up
      */
     protected function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
     }
 

@@ -131,9 +131,7 @@ class singleview extends grade_report {
 
     protected function setup_groups() {
         parent::setup_groups();
-        if ($this->groupmode) {
-            $this->group_selector = static::groups_course_menu($this->course);
-        }
+        $this->group_selector = static::groups_course_menu($this->course);
     }
 
     /**
@@ -146,8 +144,8 @@ class singleview extends grade_report {
     protected static function groups_course_menu(stdClass $course) {
         global $PAGE;
 
-        $renderer = $PAGE->get_renderer('core_course', 'actionbar');
-        return $renderer->render(new \core_course\output\actionbar\group_selector(null, $PAGE->context));
+        $renderer = $PAGE->get_renderer('core_grades');
+        return $renderer->group_selector($course);
     }
 
     /**
@@ -191,7 +189,7 @@ class singleview extends grade_report {
                 ['data-action' => $type, 'data-role' => 'bulkaction']);
             $menu->add($action);
         }
-        $menu->attributes['class'] .= ' float-start my-auto';
+        $menu->attributes['class'] .= ' float-left my-auto';
 
         return $output->render($menu);
     }

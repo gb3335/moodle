@@ -657,7 +657,7 @@ class contenttype_test extends \advanced_testcase {
     /**
      * Tests pluginfile result.
      *
-     * @covers ::__construct
+     * @covers ::pluginfile
      */
     public function test_pluginfile(): void {
         $this->resetAfterTest();

@@ -65,7 +65,6 @@ class provider_test extends provider_testcase {
      * Called before every test.
      */
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest(true);
     }
 

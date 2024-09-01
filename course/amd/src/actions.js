@@ -37,7 +37,6 @@ define(
         'core/log',
         'core_courseformat/courseeditor',
         'core/event_dispatcher',
-        'core/local/inplace_editable/events',
         'core_course/events'
     ],
     function(
@@ -55,7 +54,6 @@ define(
         log,
         editor,
         EventDispatcher,
-        InplaceEditableEvents,
         CourseEvents
     ) {
 
@@ -997,21 +995,18 @@ define(
 
                 // The section and activity names are edited using inplace editable.
                 // The "update" jQuery event must be captured in order to update the course state.
-                $('body').on(InplaceEditableEvents.eventTypes.elementUpdated,
-                        `${SELECTOR.SECTIONITEM} [data-inplaceeditable]`, function(e) {
-                    if (e.detail.ajaxreturn.itemid) {
+                $('body').on('updated', `${SELECTOR.SECTIONITEM} [data-inplaceeditable]`, function(e) {
+                    if (e.ajaxreturn && e.ajaxreturn.itemid) {
                         const state = courseeditor.state;
-                        const section = state.section.get(e.detail.ajaxreturn.itemid);
+                        const section = state.section.get(e.ajaxreturn.itemid);
                         if (section !== undefined) {
-                            courseeditor.dispatch('sectionState', [e.detail.ajaxreturn.itemid]);
+                            courseeditor.dispatch('sectionState', [e.ajaxreturn.itemid]);
                         }
                     }
                 });
-
-                $('body').on(InplaceEditableEvents.eventTypes.elementUpdated,
-                        `${SELECTOR.ACTIVITYLI} [data-itemtype="activityname"][data-inplaceeditable]`, function(e) {
-                    if (e.detail.ajaxreturn.itemid) {
-                        courseeditor.dispatch('cmState', [e.detail.ajaxreturn.itemid]);
+                $('body').on('updated', `${SELECTOR.ACTIVITYLI} [data-inplaceeditable]`, function(e) {
+                    if (e.ajaxreturn && e.ajaxreturn.itemid) {
+                        courseeditor.dispatch('cmState', [e.ajaxreturn.itemid]);
                     }
                 });
 

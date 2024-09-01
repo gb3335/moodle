@@ -44,7 +44,6 @@ class externallib_test extends externallib_advanced_testcase {
      */
     protected function setUp(): void {
         global $CFG;
-        parent::setUp();
 
         $this->resetAfterTest(true);
 

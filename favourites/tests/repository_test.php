@@ -30,7 +30,6 @@ use core_favourites\local\entity\favourite;
 class repository_test extends \advanced_testcase {
 
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
     }
 

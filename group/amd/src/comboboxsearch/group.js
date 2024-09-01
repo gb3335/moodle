@@ -29,15 +29,9 @@ import Notification from 'core/notification';
 export default class GroupSearch extends search_combobox {
 
     courseID;
-    cmID;
     bannedFilterFields = ['id', 'link', 'groupimageurl'];
 
-    /**
-     * Construct the class.
-     *
-     * @param {int|null} cmid ID of the course module initiating the group search (optional).
-     */
-    constructor(cmid = null) {
+    constructor() {
         super();
         this.selectors = {...this.selectors,
             courseid: '[data-region="courseid"]',
@@ -47,7 +41,6 @@ export default class GroupSearch extends search_combobox {
         this.courseID = component.querySelector(this.selectors.courseid).dataset.courseid;
         // Override the instance since the body is built outside the constructor for the combobox.
         this.instance = component.querySelector(this.selectors.instance).dataset.instance;
-        this.cmID = cmid;
 
         const searchValueElement = this.component.querySelector(`#${this.searchInput.dataset.inputElement}`);
         searchValueElement.addEventListener('change', () => {
@@ -83,13 +76,8 @@ export default class GroupSearch extends search_combobox {
         this.renderDefault().catch(Notification.exception);
     }
 
-    /**
-     * Initialise an instance of the class.
-     *
-     * @param {int|null} cmid ID of the course module initiating the group search (optional).
-     */
-    static init(cmid = null) {
-        return new GroupSearch(cmid);
+    static init() {
+        return new GroupSearch();
     }
 
     /**
@@ -143,7 +131,7 @@ export default class GroupSearch extends search_combobox {
      * @returns {Promise<*>}
      */
     async fetchDataset() {
-        return await groupFetch(this.courseID, this.cmID).then((r) => r.groups);
+        return await groupFetch(this.courseID).then((r) => r.groups);
     }
 
     /**

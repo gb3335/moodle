@@ -324,14 +324,13 @@ class helper {
      * Get the enrolled users for course.
      *
      * @param stdClass $course The course object.
-     * @param bool $onlyactive Only enrolments that are active (e.g. not suspended).
      * @return array
      */
-    public static function get_enrolled_users_for_course(stdClass $course, bool $onlyactive = true): array {
+    public static function get_enrolled_users_for_course(stdClass $course): array {
         global $CFG;
         require_once($CFG->libdir . '/enrollib.php');
         return array_column(
-            enrol_get_course_users(courseid: $course->id, onlyactive: $onlyactive),
+            enrol_get_course_users(courseid: $course->id),
             'id',
         );
     }
@@ -521,14 +520,10 @@ class helper {
         );
 
         foreach ($coursegroups as $coursegroup) {
-            $groupusers = array_column(
+            $groupuserstoadd = array_column(
                 groups_get_members(groupid: $coursegroup->id),
                 'id',
             );
-
-            // Filter out users who are not active in this course.
-            $enrolledusers = self::get_enrolled_users_for_course(course: $course);
-            $groupuserstoadd = array_intersect($groupusers, $enrolledusers);
 
             foreach ($allaccessgroupusers as $allaccessgroupuser) {
                 if (!in_array($allaccessgroupuser, $groupuserstoadd, true)) {

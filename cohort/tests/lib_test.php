@@ -693,11 +693,8 @@ class lib_test extends \advanced_testcase {
     /**
      * Test that all get functions return custom fields data.
      *
-     * @covers ::cohort_get_cohort
-     * @covers ::cohort_get_cohorts
-     * @covers ::cohort_get_all_cohorts
-     * @covers ::cohort_get_available_cohorts
-     * @covers ::cohort_get_user_cohorts
+     * @covers \cohort_get_cohort, \cohort_get_cohorts, \cohort_get_all_cohorts
+     * @covers \cohort_get_available_cohorts, \cohort_get_user_cohorts
      */
     public function test_get_functions_return_custom_fields(): void {
         $this->resetAfterTest();
@@ -915,7 +912,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test that lib function returns custom field data for a cohorts.
      *
-     * @covers ::cohort_get_custom_fields_data
+     * @covers \cohort_get_custom_fields_data
      */
     public function test_cohort_get_custom_fields_data(): void {
         $this->resetAfterTest();

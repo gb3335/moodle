@@ -23,7 +23,6 @@ use core_badges\reportbuilder\local\entities\badge;
 use core_reportbuilder\local\helpers\database;
 use core_reportbuilder\local\report\{action, column};
 use core_reportbuilder\system_report;
-use html_writer;
 use lang_string;
 use moodle_url;
 use pix_icon;
@@ -42,9 +41,6 @@ require_once("{$CFG->libdir}/badgeslib.php");
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class badges extends system_report {
-
-    /** @var int $badgeid The ID of the current badge row */
-    private int $badgeid;
 
     /**
      * Initialise report, we need to set the main table, load our entities and set columns/filters
@@ -73,7 +69,7 @@ class badges extends system_report {
         $this->add_base_fields("{$entityalias}.id, {$entityalias}.type, {$entityalias}.courseid, {$entityalias}.status");
 
         // Now we can call our helper methods to add the content we want to include in the report.
-        $this->add_columns();
+        $this->add_columns($badgeentity);
         $this->add_filters();
         $this->add_actions();
 
@@ -105,19 +101,22 @@ class badges extends system_report {
      *
      * They are provided by the entities we previously added in the {@see initialise} method, referencing each by their
      * unique identifier. If custom columns are needed just for this report, they can be defined here.
+     *
+     * @param badge $badgeentity
      */
-    protected function add_columns(): void {
-        $badgeentity = $this->get_entity('badge');
-
-        $this->add_columns_from_entities([
+    public function add_columns(badge $badgeentity): void {
+        $columns = [
             'badge:image',
             'badge:namewithlink',
             'badge:version',
             'badge:status',
             'badge:criteria',
-        ]);
+        ];
+
+        $this->add_columns_from_entities($columns);
 
         // Issued badges column.
+        // TODO: Move this column to the entity when MDL-76392 is integrated.
         $tempbadgealias = database::generate_alias();
         $badgeentityalias = $badgeentity->get_table_alias('badge');
         $this->add_column((new column(
@@ -132,14 +131,7 @@ class badges extends system_report {
                       INNER JOIN {user} u
                               ON {$tempbadgealias}.userid = u.id
                            WHERE {$tempbadgealias}.badgeid = {$badgeentityalias}.id AND u.deleted = 0)", 'issued')
-            ->set_is_sortable(true)
-            ->set_callback(function(int $count): string {
-                if (!has_capability('moodle/badges:viewawarded', $this->get_context())) {
-                    return (string) $count;
-                }
-
-                return html_writer::link(new moodle_url('/badges/recipients.php', ['id' => $this->badgeid]), $count);
-            }));
+            ->set_is_sortable(true));
 
         // Remove title from image column.
         $this->get_column('badge:image')->set_title(null);
@@ -172,19 +164,21 @@ class badges extends system_report {
     protected function add_actions(): void {
         // Activate badge.
         $this->add_action((new action(
-            new moodle_url('#'),
+            new moodle_url('/badges/action.php', [
+                'id' => ':id',
+                'activate' => true,
+                'return' => ':return',
+            ]),
             new pix_icon('t/show', '', 'core'),
-            [
-                'data-action' => 'enablebadge',
-                'data-badgeid' => ':id',
-                'data-badgename' => ':badgename',
-                'data-courseid' => ':courseid',
-            ],
+            [],
             false,
             new lang_string('activate', 'badges')
         ))->add_callback(static function(stdclass $row): bool {
             $badge = new \core_badges\badge($row->id);
-            $row->badgename = $badge->name;
+
+            // Populate the return URL.
+            $row->return = (new moodle_url('/badges/index.php',
+                ['type' => $badge->type, 'id' => (int) $badge->courseid]))->out_as_local_url(false);
 
             return has_capability('moodle/badges:configuredetails', $badge->get_context()) &&
                 $badge->has_criteria() &&
@@ -194,19 +188,18 @@ class badges extends system_report {
 
         // Deactivate badge.
         $this->add_action((new action(
-            new moodle_url('#'),
+            new moodle_url('/badges/index.php', [
+                'lock' => ':id',
+                'sesskey' => sesskey(),
+                'type' => ':type',
+                'id' => ':courseid',
+            ]),
             new pix_icon('t/hide', '', 'core'),
-            [
-                'data-action' => 'disablebadge',
-                'data-badgeid' => ':id',
-                'data-badgename' => ':badgename',
-                'data-courseid' => ':courseid',
-            ],
+            [],
             false,
             new lang_string('deactivate', 'badges')
         ))->add_callback(static function(stdclass $row): bool {
             $badge = new \core_badges\badge($row->id);
-            $row->badgename = $badge->name;
             return has_capability('moodle/badges:configuredetails', $badge->get_context()) &&
                 $badge->has_criteria() &&
                 $row->status != BADGE_STATUS_INACTIVE && $row->status != BADGE_STATUS_INACTIVE_LOCKED;
@@ -294,15 +287,6 @@ class badges extends system_report {
             default:
                 throw new \coding_exception('Wrong context');
         }
-    }
-
-    /**
-     * Store the ID of the badge within each row
-     *
-     * @param stdClass $row
-     */
-    public function row_callback(stdClass $row): void {
-        $this->badgeid = (int) $row->id;
     }
 
     /**

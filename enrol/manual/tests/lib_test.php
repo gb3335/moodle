@@ -843,7 +843,7 @@ class lib_test extends \advanced_testcase {
             get_string(
                 'customwelcomemessageplaceholder',
                 'core_enrol',
-                ['firstname' => $student->firstname, 'coursename' => $course->fullname],
+                ['fullname' => fullname($student), 'coursename' => $course->fullname],
             ),
             $message->fullmessage,
         );

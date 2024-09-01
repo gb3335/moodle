@@ -306,8 +306,10 @@ class file extends base {
             $this->get_entity_name()
         ))
             ->add_joins($this->get_joins())
+            ->set_type(column::TYPE_INTEGER)
             ->add_fields("{$filesalias}.itemid")
-            ->set_is_sortable(true);
+            ->set_is_sortable(true)
+            ->set_disabled_aggregation_all();
 
         // Time created.
         $columns[] = (new column(
@@ -393,16 +395,6 @@ class file extends base {
                 return $mimetypes;
             });
 
-        // Author.
-        $filters[] = (new filter(
-            text::class,
-            'author',
-            new lang_string('author', 'core_repository'),
-            $this->get_entity_name(),
-            "{$filesalias}.author"
-        ))
-            ->add_joins($this->get_joins());
-
         // License (consider null = 'unknown/license not specified' for filtering purposes).
         $filters[] = (new filter(
             select::class,
@@ -430,26 +422,6 @@ class file extends base {
             new lang_string('contenthash', 'core_files'),
             $this->get_entity_name(),
             "{$filesalias}.contenthash"
-        ))
-            ->add_joins($this->get_joins());
-
-        // Component.
-        $filters[] = (new filter(
-            text::class,
-            'component',
-            new lang_string('plugin'),
-            $this->get_entity_name(),
-            "{$filesalias}.component"
-        ))
-            ->add_joins($this->get_joins());
-
-        // Area.
-        $filters[] = (new filter(
-            text::class,
-            'area',
-            new lang_string('pluginarea'),
-            $this->get_entity_name(),
-            "{$filesalias}.filearea"
         ))
             ->add_joins($this->get_joins());
 

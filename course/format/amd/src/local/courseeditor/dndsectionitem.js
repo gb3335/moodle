@@ -46,8 +46,8 @@ export default class extends BaseComponent {
             this.course = state.course;
         }
 
-        // Prevent topic zero and delegated sections from being draggable.
-        if (this.section.number > 0 && this.section.component === null) {
+        // Prevent topic zero from being draggable.
+        if (this.section.number > 0) {
             this.getDraggableData = this._getDraggableData;
         }
 
@@ -122,7 +122,7 @@ export default class extends BaseComponent {
         // Course module validation.
         if (dropdata?.type === 'cm') {
             // Prevent content loops with subsections.
-            if (this.section?.component && dropdata?.hasdelegatedsection === true) {
+            if (this.section?.component && dropdata?.delegatesection === true) {
                 return false;
             }
             // The first section element is already there so we can ignore it.

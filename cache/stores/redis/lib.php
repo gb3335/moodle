@@ -14,12 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-use core_cache\configurable_cache_interface;
-use core_cache\definition;
-use core_cache\key_aware_cache_interface;
-use core_cache\lockable_cache_interface;
-use core_cache\searchable_cache_interface;
-use core_cache\store;
+/**
+ * Redis Cache Store - Main library
+ *
+ * @package   cachestore_redis
+ * @copyright 2013 Adam Durana
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
 
 /**
  * Redis Cache Store
@@ -30,16 +33,11 @@ use core_cache\store;
  * not to use TTL if at all possible and the benefits of having many stores in Redis using the
  * hash configuration, the hash implementation has been used.
  *
- * @package   cachestore_redis
  * @copyright   2013 Adam Durana
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class cachestore_redis extends store implements
-    key_aware_cache_interface,
-    configurable_cache_interface,
-    searchable_cache_interface,
-    lockable_cache_interface
-{
+class cachestore_redis extends cache_store implements cache_is_key_aware, cache_is_lockable,
+        cache_is_configurable, cache_is_searchable {
     /**
      * Compressor: none.
      */
@@ -89,7 +87,7 @@ class cachestore_redis extends store implements
     /**
      * Cache definition for this store.
      *
-     * @var definition
+     * @var cache_definition
      */
     protected $definition = null;
 
@@ -333,10 +331,10 @@ class cachestore_redis extends store implements
     /**
      * Initialize the store.
      *
-     * @param definition $definition
+     * @param cache_definition $definition
      * @return bool
      */
-    public function initialise(definition $definition) {
+    public function initialise(cache_definition $definition) {
         $this->definition = $definition;
         $this->hash       = $definition->generate_definition_hash();
         return true;
@@ -555,7 +553,7 @@ class cachestore_redis extends store implements
     /**
      * Determines if the store has a given key.
      *
-     * @see key_aware_cache_interface
+     * @see cache_is_key_aware
      * @param string $key The key to check for.
      * @return bool True if the key exists, false if it does not.
      */
@@ -566,7 +564,7 @@ class cachestore_redis extends store implements
     /**
      * Determines if the store has any of the keys in a list.
      *
-     * @see key_aware_cache_interface
+     * @see cache_is_key_aware
      * @param array $keys The keys to check for.
      * @return bool True if any of the keys are found, false none of the keys are found.
      */
@@ -582,7 +580,7 @@ class cachestore_redis extends store implements
     /**
      * Determines if the store has all of the keys in a list.
      *
-     * @see key_aware_cache_interface
+     * @see cache_is_key_aware
      * @param array $keys The keys to check for.
      * @return bool True if all of the keys are found, false otherwise.
      */
@@ -598,7 +596,7 @@ class cachestore_redis extends store implements
     /**
      * Tries to acquire a lock with a given name.
      *
-     * @see lockable_cache_interface
+     * @see cache_is_lockable
      * @param string $key Name of the lock to acquire.
      * @param string $ownerid Information to identify owner of lock if acquired.
      * @return bool True if the lock was acquired, false if it was not.
@@ -641,7 +639,7 @@ class cachestore_redis extends store implements
     /**
      * Checks a lock with a given name and owner information.
      *
-     * @see lockable_cache_interface
+     * @see cache_is_lockable
      * @param string $key Name of the lock to check.
      * @param string $ownerid Owner information to check existing lock against.
      * @return mixed True if the lock exists and the owner information matches, null if the lock does not
@@ -687,7 +685,7 @@ class cachestore_redis extends store implements
     /**
      * Releases a given lock if the owner information matches.
      *
-     * @see lockable_cache_interface
+     * @see cache_is_lockable
      * @param string $key Name of the lock to release.
      * @param string $ownerid Owner information to use.
      * @return bool True if the lock is released, false if it is not.
@@ -806,8 +804,7 @@ class cachestore_redis extends store implements
     /**
      * Creates a configuration array from given 'add instance' form data.
      *
-     * @see configurable_cache_interface
-     *
+     * @see cache_is_configurable
      * @param stdClass $data
      * @return array
      */
@@ -827,7 +824,7 @@ class cachestore_redis extends store implements
     /**
      * Sets form data from a configuration array.
      *
-     * @see configurable_cache_interface
+     * @see cache_is_configurable
      * @param moodleform $editform
      * @param array $config
      */
@@ -858,10 +855,10 @@ class cachestore_redis extends store implements
     /**
      * Creates an instance of the store for testing.
      *
-     * @param definition $definition
+     * @param cache_definition $definition
      * @return mixed An instance of the store, or false if an instance cannot be created.
      */
-    public static function initialise_test_instance(definition $definition) {
+    public static function initialise_test_instance(cache_definition $definition) {
         if (!self::are_requirements_met()) {
             return false;
         }

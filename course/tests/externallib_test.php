@@ -47,7 +47,6 @@ final class externallib_test extends externallib_advanced_testcase {
     protected function setUp(): void {
         global $CFG;
         require_once($CFG->dirroot . '/course/externallib.php');
-        parent::setUp();
     }
 
     /**
@@ -1172,9 +1171,6 @@ final class externallib_test extends externallib_advanced_testcase {
         // We need to execute the return values cleaning process to simulate the web service server.
         $sections = external_api::clean_returnvalue(core_course_external::get_course_contents_returns(), $sections);
 
-        $this->assertEmpty($sections[0]['component']);
-        $this->assertEmpty($sections[0]['itemid']);
-
         $modinfo = get_fast_modinfo($course);
         $testexecuted = 0;
         foreach ($sections[0]['modules'] as $module) {
@@ -1850,54 +1846,6 @@ final class externallib_test extends externallib_advanced_testcase {
         $result = core_course_external::get_course_contents($course->id);
         $this->assertDebuggingCalled();
         $result = external_api::clean_returnvalue(core_course_external::get_course_contents_returns(), $result);
-    }
-
-    /**
-     * Test get_course_contents for courses with sub-sections.
-     *
-     * @covers ::get_course_contents
-     */
-    public function test_get_course_contents_subsections(): void {
-        global $DB, $PAGE;
-        $this->resetAfterTest();
-
-        list($course, $forumcm, $datacm, $pagecm, $labelcm, $urlcm) = $this->prepare_get_course_contents_test();
-
-        // Add subsection.
-        $manager = \core_plugin_manager::resolve_plugininfo_class('mod');
-        $manager::enable_plugin('subsection', 1);
-        $modsubsection = $this->getDataGenerator()->create_module('subsection', ['course' => $course->id, 'section' => 2]);
-
-        // This is needed until MDL-76728 is resolved.
-        $PAGE->set_url('/course/view.php', ['id' => $course->id]);
-
-        $result = core_course_external::get_course_contents($course->id);
-        $result = external_api::clean_returnvalue(core_course_external::get_course_contents_returns(), $result);
-
-        $this->assertCount(5, $result); // We have 4 original sections plus the one created by mod_subsection.
-
-        foreach ($result as $section) {
-
-            if ($section['section'] == 5) { // This is the new section created by modsubsection.
-                $this->assertEquals('mod_subsection', $section['component']);
-                $this->assertEquals($modsubsection->id, $section['itemid']);
-            } else {
-                $this->assertEmpty($section['component']);
-                $this->assertEmpty($section['itemid']);
-            }
-
-            if ($section['section'] == 2) { // This is the section where mod_subsection is.
-                foreach ($section['modules'] as $module) {
-                    if ($module['modname'] == 'subsection') {
-                        $this->assertNotEmpty($module['customdata']);
-                        $customdata = json_decode($module['customdata']);
-                        $lastsection = end($result);
-                        // Customdata contains the section id of the section created by the module.
-                        $this->assertEquals($lastsection['id'], $customdata->sectionid);
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -2909,13 +2857,8 @@ final class externallib_test extends externallib_advanced_testcase {
 
         $category1 = self::getDataGenerator()->create_category(array('name' => 'Cat 1'));
         $category2 = self::getDataGenerator()->create_category(array('parent' => $category1->id));
-        $numsections = 4;
-        $course1 = self::getDataGenerator()->create_course([
-            'category' => $category1->id,
-            'shortname' => 'c1',
-            'format' => 'topics',
-            'numsections' => $numsections,
-        ]);
+        $course1 = self::getDataGenerator()->create_course(
+            array('category' => $category1->id, 'shortname' => 'c1', 'format' => 'topics'));
 
         $fieldcategory = self::getDataGenerator()->create_custom_field_category(['name' => 'Other fields']);
         $customfield = ['shortname' => 'test', 'name' => 'Custom field', 'type' => 'text',
@@ -3119,20 +3062,6 @@ final class externallib_test extends externallib_advanced_testcase {
         $this->assertCount(0, $result['courses']);
 
         $result = core_course_external::get_courses_by_field('idnumber', 'x');
-        $result = external_api::clean_returnvalue(core_course_external::get_courses_by_field_returns(), $result);
-        $this->assertCount(0, $result['courses']);
-
-        $existingsections = $DB->get_records('course_sections', ['course' => $course1->id]);
-        $this->assertEquals(count($existingsections), $numsections + 1); // Includes generic section.
-
-        $section = array_shift($existingsections);
-        $result = core_course_external::get_courses_by_field('sectionid', $section->id);
-        $result = external_api::clean_returnvalue(core_course_external::get_courses_by_field_returns(), $result);
-        $this->assertCount(1, $result['courses']);
-        $this->assertEquals($course1->id, $result['courses'][0]['id']);
-
-        // Wrong section.
-        $result = core_course_external::get_courses_by_field('sectionid', 1234);
         $result = external_api::clean_returnvalue(core_course_external::get_courses_by_field_returns(), $result);
         $this->assertCount(0, $result['courses']);
     }

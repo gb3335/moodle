@@ -87,26 +87,15 @@ class get_users_in_report extends external_api {
         );
         $report = new grade_report_grader($courseid, $gpr, $context);
 
-        $userfieldsapi = \core_user\fields::for_identity($context, false)->with_userpic();
-        $extrauserfields = $userfieldsapi->get_required_fields([\core_user\fields::PURPOSE_IDENTITY]);
-
         // For the returned users, Add a couple of extra fields that we need for the search module.
-        $users = array_map(function ($user) use ($PAGE, $extrauserfields) {
-            $userforselector = new \stdClass();
-            $userforselector->id = $user->id;
-            $userforselector->fullname = fullname($user);
-            foreach (\core_user\fields::get_name_fields() as $field) {
-                $userforselector->$field = $user->$field ?? null;
-            }
+        $users = array_map(function ($user) use ($PAGE) {
+            $user->fullname = fullname($user);
             $userpicture = new user_picture($user);
             $userpicture->size = 1;
-            $userforselector->profileimageurl = $userpicture->get_url($PAGE)->out(false);
+            $user->profileimageurl = $userpicture->get_url($PAGE)->out(false);
             $userpicture->size = 0; // Size f2.
-            $userforselector->profileimageurlsmall = $userpicture->get_url($PAGE)->out(false);
-            foreach ($extrauserfields as $field) {
-                $userforselector->$field = $user->$field ?? null;
-            }
-            return $userforselector;
+            $user->profileimageurlsmall = $userpicture->get_url($PAGE)->out(false);
+            return $user;
         }, $report->load_users(true));
         sort($users);
 

@@ -164,7 +164,7 @@ class block_social_activities extends block_list {
 
                     $editbuttons = html_writer::tag('div',
                         $courserenderer->render($controlmenu),
-                        ['class' => 'buttons activity-actions ms-auto']
+                        ['class' => 'buttons activity-actions ml-auto']
                     );
                 } else {
                     $editbuttons = '';

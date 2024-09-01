@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -21,9 +22,9 @@
  * specific data.  Each module must be modified to take advantage of this new feature.
  * The feature will also reset the start date of the course if necessary.
  *
- * @package   core_course
  * @copyright Mark Flach and moodle.com
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package course
  */
 
 require('../config.php');
@@ -34,12 +35,12 @@ require_once($CFG->dirroot . '/backup/util/helper/backup_helper.class.php');
 
 $id = required_param('id', PARAM_INT);
 
-if (!$course = $DB->get_record('course', ['id' => $id])) {
-    throw new \moodle_exception('invalidcourseid');
+if (!$course = $DB->get_record('course', array('id'=>$id))) {
+    throw new \moodle_exception("invalidcourseid");
 }
 
-$PAGE->set_url('/course/reset.php', ['id' => $id]);
-$PAGE->set_pagelayout('standard');
+$PAGE->set_url('/course/reset.php', array('id'=>$id));
+$PAGE->set_pagelayout('admin');
 
 require_login($course);
 require_capability('moodle/course:reset', context_course::instance($course->id));
@@ -55,17 +56,17 @@ $PAGE->set_secondary_active_tab('coursereuse');
 $mform = new course_reset_form();
 
 if ($mform->is_cancelled()) {
-    redirect($CFG->wwwroot . '/course/view.php?id='.$id);
+    redirect($CFG->wwwroot.'/course/view.php?id='.$id);
 
-} else if ($data = $mform->get_data()) { // No magic quotes.
+} else if ($data = $mform->get_data()) { // no magic quotes
 
     if (isset($data->selectdefault)) {
-        $_POST = [];
+        $_POST = array();
         $mform = new course_reset_form();
         $mform->load_defaults();
 
     } else if (isset($data->deselectall)) {
-        $_POST = [];
+        $_POST = array();
         $mform = new course_reset_form();
 
     } else {
@@ -76,44 +77,33 @@ if ($mform->is_cancelled()) {
         $data->reset_end_date_old = $course->enddate;
         $status = reset_course_userdata($data);
 
-        $data = [];
+        $data = array();
         foreach ($status as $item) {
-            $line = [];
+            $line = array();
             $line[] = $item['component'];
             $line[] = $item['item'];
-            if ($item['error'] === false) {
-                $line[] = get_string('statusdone');
-            } else {
-                $line[] = html_writer::div(
-                    $OUTPUT->pix_icon('i/invalid', get_string('error')) . $item['error'],
-                );
-            }
+            $line[] = ($item['error'] === false) ? get_string('statusok') : '<div class="notifyproblem">'.$item['error'].'</div>';
             $data[] = $line;
         }
 
         $table = new html_table();
-        $table->head  = [get_string('resetcomponent'), get_string('resettask'), get_string('resetstatus')];
-        $table->size  = ['20%', '40%', '40%'];
-        $table->align = ['left', 'left', 'left'];
+        $table->head  = array(get_string('resetcomponent'), get_string('resettask'), get_string('resetstatus'));
+        $table->size  = array('20%', '40%', '40%');
+        $table->align = array('left', 'left', 'left');
         $table->width = '80%';
         $table->data  = $data;
         echo html_writer::table($table);
 
-        echo $OUTPUT->continue_button('view.php?id=' . $course->id);  // Back to course page.
+        echo $OUTPUT->continue_button('view.php?id='.$course->id);  // Back to course page
         echo $OUTPUT->footer();
         exit;
     }
-} else {
-    $mform = new course_reset_form();
-    $mform->load_defaults();
 }
 
-$PAGE->requires->js_call_amd('core_course/resetcourse', 'init');
 echo $OUTPUT->header();
 \backup_helper::print_coursereuse_selector('reset');
 
 echo $OUTPUT->box(get_string('resetinfo'));
-echo $OUTPUT->box(get_string('resetinfoselect'));
 
 $mform->display();
 echo $OUTPUT->footer();

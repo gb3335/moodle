@@ -320,8 +320,7 @@ class restore_stepslib_date_test extends \restore_date_testcase {
     /**
      * Checking that the user completion of an activity relating to the view field does not change
      * when doing a course restore.
-     * @covers \backup_userscompletion_structure_step
-     * @covers \restore_userscompletion_structure_step
+     * @covers ::backup_and_restore
      */
     public function test_usercompletion_view_restore(): void {
         global $DB;

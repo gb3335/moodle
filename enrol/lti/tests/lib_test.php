@@ -49,7 +49,6 @@ class lib_test extends \lti_advantage_testcase {
      * This is executed before running any tests in this file.
      */
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
         $this->setAdminUser();
     }

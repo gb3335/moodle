@@ -25,9 +25,9 @@ use core_customfield_generator;
  * @category   test
  * @copyright  2018 Toni Barbera <toni@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers \core_customfield\category_controller
  */
-final class category_controller_test extends \advanced_testcase {
+class category_controller_test extends \advanced_testcase {
+
     /**
      * Get generator.
      *
@@ -75,10 +75,8 @@ final class category_controller_test extends \advanced_testcase {
         $c = category_controller::create($catrecord->id, $catrecord);
         $debugging = $this->getDebuggingMessages();
         $this->assertEquals(1, count($debugging));
-        $this->assertEquals(
-            'Too many parameters, either id need to be specified or a record, but not both.',
-            $debugging[0]->message
-        );
+        $this->assertEquals('Too many parameters, either id need to be specified or a record, but not both.',
+            $debugging[0]->message);
         $this->resetDebugging();
         $this->assertTrue($c instanceof category_controller);
 
@@ -88,6 +86,7 @@ final class category_controller_test extends \advanced_testcase {
             $this->fail('Expected exception');
         } catch (\moodle_exception $e) {
             $this->assertEquals('Category not found', $e->getMessage());
+            $this->assertEquals(\moodle_exception::class, get_class($e));
         }
 
         // Missing required elements.
@@ -97,6 +96,7 @@ final class category_controller_test extends \advanced_testcase {
         } catch (\coding_exception $e) {
             $this->assertEquals('Coding error detected, it must be fixed by a programmer: Not enough parameters ' .
                 'to initialise category_controller - unknown component', $e->getMessage());
+            $this->assertEquals(\coding_exception::class, get_class($e));
         }
 
         // Missing required elements.
@@ -106,6 +106,7 @@ final class category_controller_test extends \advanced_testcase {
         } catch (\coding_exception $e) {
             $this->assertEquals('Coding error detected, it must be fixed by a programmer: Not enough parameters ' .
                 'to initialise category_controller - unknown area', $e->getMessage());
+            $this->assertEquals(\coding_exception::class, get_class($e));
         }
 
         // Missing required elements.
@@ -115,6 +116,7 @@ final class category_controller_test extends \advanced_testcase {
         } catch (\coding_exception $e) {
             $this->assertEquals('Coding error detected, it must be fixed by a programmer: Not enough parameters ' .
                 'to initialise category_controller - unknown itemid', $e->getMessage());
+            $this->assertEquals(\coding_exception::class, get_class($e));
         }
 
         $handler = \core_course\customfield\course_handler::create();
@@ -125,6 +127,7 @@ final class category_controller_test extends \advanced_testcase {
         } catch (\coding_exception $e) {
             $this->assertEquals('Coding error detected, it must be fixed by a programmer: Component of the handler ' .
                 'does not match the one from the record', $e->getMessage());
+            $this->assertEquals(\coding_exception::class, get_class($e));
         }
 
         try {
@@ -133,6 +136,7 @@ final class category_controller_test extends \advanced_testcase {
         } catch (\coding_exception $e) {
             $this->assertEquals('Coding error detected, it must be fixed by a programmer: Area of the handler ' .
                 'does not match the one from the record', $e->getMessage());
+            $this->assertEquals(\coding_exception::class, get_class($e));
         }
 
         try {
@@ -141,20 +145,18 @@ final class category_controller_test extends \advanced_testcase {
         } catch (\coding_exception $e) {
             $this->assertEquals('Coding error detected, it must be fixed by a programmer: Itemid of the ' .
                 'handler does not match the one from the record', $e->getMessage());
+            $this->assertEquals(\coding_exception::class, get_class($e));
         }
 
         try {
             $user = $this->getDataGenerator()->create_user();
-            category_controller::create(0, (object) [
-                'component' => 'core_course',
-                'area' => 'course',
-                'itemid' => 0,
-                'contextid' => \context_user::instance($user->id)->id,
-            ], $handler);
+            category_controller::create(0, (object)['component' => 'core_course', 'area' => 'course', 'itemid' => 0,
+                'contextid' => \context_user::instance($user->id)->id], $handler);
             $this->fail('Expected exception');
         } catch (\coding_exception $e) {
             $this->assertEquals('Coding error detected, it must be fixed by a programmer: Context of the ' .
                 'handler does not match the one from the record', $e->getMessage());
+            $this->assertEquals(\coding_exception::class, get_class($e));
         }
     }
 

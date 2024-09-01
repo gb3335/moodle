@@ -36,7 +36,6 @@ class local_api_test extends \advanced_testcase {
      * Tests set up
      */
     protected function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
     }
 

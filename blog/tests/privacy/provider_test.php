@@ -49,7 +49,6 @@ require_once($CFG->dirroot . '/comment/lib.php');
 class provider_test extends provider_testcase {
 
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
     }
 

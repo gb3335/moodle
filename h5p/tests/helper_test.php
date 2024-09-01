@@ -35,7 +35,6 @@ class helper_test extends \advanced_testcase {
      * Register the H5P autoloader
      */
     protected function setUp(): void {
-        parent::setUp();
         autoloader::register();
     }
 
@@ -205,6 +204,7 @@ class helper_test extends \advanced_testcase {
      * Test the behaviour of save_h5p() when the H5P file contains metadata.
      *
      * @runInSeparateProcess
+     * @covers ::save_h5p
      */
     public function test_save_h5p_metadata(): void {
         global $DB;

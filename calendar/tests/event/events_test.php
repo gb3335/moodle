@@ -54,7 +54,6 @@ class events_test extends \advanced_testcase {
      */
     protected function setUp(): void {
         global $USER;
-        parent::setUp();
         // The user we are going to test this on.
         $this->setAdminUser();
         $this->user = $USER;

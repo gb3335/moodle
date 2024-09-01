@@ -53,7 +53,6 @@ class moodle1_converter_test extends \advanced_testcase {
 
     protected function setUp(): void {
         global $CFG;
-        parent::setUp();
 
         $this->tempdir = convert_helper::generate_id('unittest');
         $this->tempdirpath = make_backup_temp_directory($this->tempdir);
@@ -91,7 +90,6 @@ class moodle1_converter_test extends \advanced_testcase {
         if (empty($CFG->keeptempdirectoriesonbackup)) {
             fulldelete($this->tempdirpath);
         }
-        parent::tearDown();
     }
 
     public function test_detect_format(): void {

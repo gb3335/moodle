@@ -122,8 +122,8 @@ if (!empty($add)) {
      $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 
     require_login($course, false, $cm);
-    $coursecontext = context_course::instance($course->id);
-    require_all_capabilities(['moodle/backup:backuptargetimport', 'moodle/restore:restoretargetimport'], $coursecontext);
+    $modcontext = context_module::instance($cm->id);
+    require_capability('moodle/course:manageactivities', $modcontext);
 
     // Duplicate the module.
     $newcm = duplicate_module($course, $cm);

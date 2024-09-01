@@ -21,23 +21,18 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import UserSearch from 'core_user/comboboxsearch/user';
+import Url from 'core/url';
 import {renderForPromise, replaceNodeContents} from 'core/templates';
 import * as Repository from 'core_grades/searchwidget/repository';
 
 export default class User extends UserSearch {
 
-    /**
-     * Construct the class.
-     *
-     * @param {string} baseUrl The base URL for the page.
-     */
-    constructor(baseUrl) {
+    constructor() {
         super();
-        this.baseUrl = baseUrl;
     }
 
-    static init(baseUrl) {
-        return new User(baseUrl);
+    static init() {
+        return new User();
     }
 
     /**
@@ -63,10 +58,11 @@ export default class User extends UserSearch {
      * @returns {string|*}
      */
     selectAllResultsLink() {
-        const url = new URL(this.baseUrl);
-        url.searchParams.set('userid', 0);
-        url.searchParams.set('searchvalue', this.getSearchTerm());
-        return url.toString();
+        return Url.relativeUrl('/grade/report/user/index.php', {
+            id: this.courseID,
+            userid: 0,
+            searchvalue: this.getSearchTerm()
+        }, false);
     }
 
     /**
@@ -76,10 +72,11 @@ export default class User extends UserSearch {
      * @returns {string|*}
      */
     selectOneLink(userID) {
-        const url = new URL(this.baseUrl);
-        url.searchParams.set('userid', userID);
-        url.searchParams.set('searchvalue', this.getSearchTerm());
-        return url.toString();
+        return Url.relativeUrl('/grade/report/user/index.php', {
+            id: this.courseID,
+            searchvalue: this.getSearchTerm(),
+            userid: userID,
+        }, false);
     }
 
     /**

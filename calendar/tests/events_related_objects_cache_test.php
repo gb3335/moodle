@@ -36,7 +36,6 @@ class events_related_objects_cache_test extends \advanced_testcase {
      * Tests set up
      */
     protected function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
     }
 

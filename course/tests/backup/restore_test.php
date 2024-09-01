@@ -575,9 +575,7 @@ class restore_test extends \advanced_testcase {
      * Tests course restore with editor in course format.
      *
      * @author Matthew Hilton
-     * @covers \core_courseformat\base
-     * @covers \backup_course_structure_step
-     * @covers \restore_course_structure_step
+     * @covers \core_courseformat
      */
     public function test_restore_editor_courseformat(): void {
         $this->resetAfterTest();

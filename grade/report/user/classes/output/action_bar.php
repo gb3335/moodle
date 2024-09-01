@@ -37,9 +37,6 @@ class action_bar extends \core_grades\output\action_bar {
     /** @var int|null $currentgroupid The user report view mode. */
     protected $currentgroupid;
 
-    /** @var string $usersearch String to search matching users. */
-    protected $usersearch;
-
     /**
      * The class constructor.
      *
@@ -47,20 +44,12 @@ class action_bar extends \core_grades\output\action_bar {
      * @param int $userview The user report view mode.
      * @param int|null $userid The user ID or 0 if displaying all users.
      * @param int|null $currentgroupid The ID of the current group.
-     * @param string $usersearch String to search matching user.
      */
-    public function __construct(
-        \context $context,
-        int $userview,
-        ?int $userid = null,
-        ?int $currentgroupid = null,
-        string $usersearch = ''
-    ) {
+    public function __construct(\context $context, int $userview, ?int $userid = null, ?int $currentgroupid = null) {
         parent::__construct($context);
         $this->userview = $userview;
         $this->userid = $userid;
         $this->currentgroupid = $currentgroupid;
-        $this->usersearch = $usersearch;
     }
 
     /**
@@ -92,19 +81,10 @@ class action_bar extends \core_grades\output\action_bar {
         // and the view mode selector (if applicable).
         if (has_capability('moodle/grade:viewall', $this->context)) {
             $userreportrenderer = $PAGE->get_renderer('gradereport_user');
-            $course = get_course($courseid);
-            if ($course->groupmode) {
-                $groupselector = new \core_course\output\actionbar\group_selector(null, $this->context);
-                $data['groupselector'] = $PAGE->get_renderer('core_course', 'actionbar')->render($groupselector);
-            }
+            $data['groupselector'] = $PAGE->get_renderer('core_grades')->group_selector(get_course($courseid));
             $data['userselector'] = [
                 'courseid' => $courseid,
-                'content' => $userreportrenderer->users_selector(
-                    course: get_course($courseid),
-                    userid: $this->userid,
-                    groupid: $this->currentgroupid,
-                    usersearch: $this->usersearch
-                ),
+                'content' => $userreportrenderer->users_selector(get_course($courseid), $this->userid, $this->currentgroupid)
             ];
 
             // Do not output the 'view mode' selector when in zero state or when the current user is viewing its own report.

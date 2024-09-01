@@ -55,15 +55,11 @@ define(['jquery', 'core_calendar/repository', 'core/notification'], function($, 
         // If the user choose a course in the selector do a WS request to get groups.
         courseGroupSelect.on('change', function() {
             var courseId = formElement.find(SELECTORS.EVENT_GROUP_COURSE_ID).val();
-            if (isNaN(courseId) || courseId <= 0) {
-                loadGroupSelectOptions([]);
-            } else {
-                CalendarRepository.getCourseGroupsData(courseId)
-                    .then(function(groups) {
-                        return loadGroupSelectOptions(groups);
-                    })
-                    .catch(Notification.exception);
-            }
+            CalendarRepository.getCourseGroupsData(courseId)
+                .then(function(groups) {
+                    return loadGroupSelectOptions(groups);
+                })
+                .catch(Notification.exception);
         });
     };
 
