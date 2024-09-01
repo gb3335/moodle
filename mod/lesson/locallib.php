@@ -2307,7 +2307,7 @@ class lesson extends lesson_base {
                             'lesson',
                             format_string($instancename, true, ['context' => $this->get_context()]),
                         ),
-                        ['class' => 'centerpadded lessonbutton standardbutton pe-3'],
+                        ['class' => 'centerpadded lessonbutton standardbutton pr-3'],
                     );
                 }
             }
@@ -2864,17 +2864,15 @@ class lesson extends lesson_base {
 
         if ($this->properties->usepassword && empty($USER->lessonloggedin[$this->id])) {
             $correctpass = false;
-
-            $userpassword = trim((string) $userpassword);
-            if ($userpassword !== '' &&
-                    ($this->properties->password === md5($userpassword) || $this->properties->password === $userpassword)) {
+            if (!empty($userpassword) &&
+                    (($this->properties->password == md5(trim($userpassword))) || ($this->properties->password == trim($userpassword)))) {
                 // With or without md5 for backward compatibility (MDL-11090).
                 $correctpass = true;
                 $USER->lessonloggedin[$this->id] = true;
             } else if (isset($this->properties->extrapasswords)) {
                 // Group overrides may have additional passwords.
                 foreach ($this->properties->extrapasswords as $password) {
-                    if ($password === md5($userpassword) || $password === $userpassword) {
+                    if (strcmp($password, md5(trim($userpassword))) === 0 || strcmp($password, trim($userpassword)) === 0) {
                         $correctpass = true;
                         $USER->lessonloggedin[$this->id] = true;
                     }

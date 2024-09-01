@@ -109,7 +109,6 @@ class external_test extends externallib_advanced_testcase {
      */
     public function setUp(): void {
         global $DB;
-        parent::setUp();
         $this->resetAfterTest();
         $this->setAdminUser();
 

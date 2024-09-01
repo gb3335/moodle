@@ -44,8 +44,15 @@ require_login($course, false, $cm);
 
 // Check the user has the required capabilities to modify an override.
 $manager->require_manage_capability();
-if (!$manager->can_view_override($override, $course, $cm)) {
-    throw new \moodle_exception('invalidoverrideid', 'quiz');
+
+if ($override->groupid) {
+    if (!groups_group_visible($override->groupid, $course, $cm)) {
+        throw new \moodle_exception('invalidoverrideid', 'quiz');
+    }
+} else {
+    if (!groups_user_groups_visible($course, $override->userid, $cm)) {
+        throw new \moodle_exception('invalidoverrideid', 'quiz');
+    }
 }
 
 $url = new moodle_url('/mod/quiz/overridedelete.php', ['id' => $override->id]);

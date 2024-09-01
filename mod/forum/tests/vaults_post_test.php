@@ -41,7 +41,6 @@ class vaults_post_test extends \advanced_testcase {
      * Set up function for tests.
      */
     public function setUp(): void {
-        parent::setUp();
         $vaultfactory = \mod_forum\local\container::get_vault_factory();
         $this->vault = $vaultfactory->get_post_vault();
     }
@@ -51,7 +50,6 @@ class vaults_post_test extends \advanced_testcase {
      */
     public function tearDown(): void {
         unset($this->vault);
-        parent::tearDown();
     }
 
     /**

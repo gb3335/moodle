@@ -146,7 +146,7 @@ $string['customscoring'] = 'Custom scoring';
 $string['customscoring_help'] = 'If enabled, a whole number value (positive or negative) may be entered for each answer.';
 $string['deadline'] = 'Deadline';
 $string['defaultessayresponse'] = 'Your essay will be graded by your teacher.';
-$string['deleteallattempts'] = 'All lesson attempts';
+$string['deleteallattempts'] = 'Delete all lesson attempts';
 $string['deletedefaults'] = 'Deleted {$a} x lesson default';
 $string['deletedpage'] = 'Deleted page';
 $string['deletepagenamed'] = 'Delete page: {$a}';
@@ -254,6 +254,7 @@ $string['gradeessay'] = 'Grade essay questions ({$a->notgradedcount} not graded 
 $string['gradeis'] = 'Grade is {$a}';
 $string['gradeoptions'] = 'Grade options';
 $string['groupoverrides'] = 'Group overrides';
+$string['groupoverridesdeleted'] = 'Group overrides deleted';
 $string['groupsnone'] = 'No groups you can access.';
 $string['handlingofretakes'] = 'Handling of re-takes';
 $string['handlingofretakes_help'] = 'If re-takes are allowed, this setting specifies whether the grade for the lesson is the mean or maximum of all attempts.';
@@ -514,8 +515,8 @@ $string['rank'] = 'Rank';
 $string['rawgrade'] = 'Raw grade';
 $string['receivedcredit'] = 'Received credit';
 $string['redisplaypage'] = 'Redisplay page';
-$string['removeallgroupoverrides'] = 'All group overrides';
-$string['removealluseroverrides'] = 'All user overrides';
+$string['removeallgroupoverrides'] = 'Delete all group overrides';
+$string['removealluseroverrides'] = 'Delete all user overrides';
 $string['report'] = 'Report';
 $string['reports'] = 'Reports';
 $string['response'] = 'Response';
@@ -591,6 +592,7 @@ $string['usemean'] = 'Use mean';
 $string['usepassword'] = 'Password protected lesson';
 $string['usepassword_help'] = 'If enabled, a password is required in order to access the lesson.';
 $string['useroverrides'] = 'User overrides';
+$string['useroverridesdeleted'] = 'User overrides deleted';
 $string['usersnone'] = 'No students have access to this lesson';
 $string['viewessayanswers'] = 'View essay answers';
 $string['viewgrades'] = 'View grades';
@@ -614,7 +616,3 @@ $string['completiontimespent'] = 'Student must do this activity at least for';
 
 // Deprecated since Moodle 4.4.
 $string['grade'] = 'Grade';
-
-// Deprecated since Moodle 4.5.
-$string['useroverridesdeleted'] = 'User overrides deleted';
-$string['groupoverridesdeleted'] = 'Group overrides deleted';

@@ -50,22 +50,10 @@ class get_overrides extends external_api {
      */
     public static function execute($quizid): array {
         $params = self::validate_parameters(self::execute_parameters(), ['quizid' => $quizid]);
-
-        $quizsettings = quiz_settings::create($params['quizid']);
-        $manager = $quizsettings->get_override_manager();
+        $manager = quiz_settings::create($params['quizid'])->get_override_manager();
         self::validate_context($manager->context);
         $manager->require_read_capability();
-
-        // Filter for those overrides user can access.
-        $overrides = array_filter(
-            $manager->get_all_overrides(),
-            fn(\stdClass $override) => $manager->can_view_override(
-                $override,
-                $quizsettings->get_course(),
-                $quizsettings->get_cm(),
-            ),
-        );
-
+        $overrides = $manager->get_all_overrides();
         return ['overrides' => $overrides];
     }
 

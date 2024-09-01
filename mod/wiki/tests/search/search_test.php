@@ -45,7 +45,6 @@ class search_test extends \advanced_testcase {
     protected $wikicollabpageareaid = null;
 
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest(true);
         $this->setAdminUser();
         set_config('enableglobalsearch', true);

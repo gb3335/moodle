@@ -87,6 +87,7 @@ define(
          * Array of form fields for LTI tool configuration.
          */
         var ltiFormFields = [
+            new FormField('selectcontentstatus', FormField.TYPES.TEXT, true, ''),
             new FormField('name', FormField.TYPES.TEXT, false, ''),
             new FormField('introeditor', FormField.TYPES.EDITOR, false, ''),
             new FormField('toolurl', FormField.TYPES.TEXT, true, ''),
@@ -161,7 +162,7 @@ define(
             const variant = {};
             ['name', 'toolurl', 'securetoolurl', 'instructorcustomparameters', 'icon', 'secureicon',
                 'launchcontainer', 'lineitemresourceid', 'lineitemtag', 'lineitemsubreviewurl',
-                'lineitemsubreviewparams'].forEach(
+                'lineitemsubreviewparams', 'selectcontentstatus'].forEach(
                 function(name) {
                     variant[name] = config[name] || '';
                 }

@@ -41,7 +41,6 @@ require_once($CFG->dirroot . '/mod/scorm/lib.php');
 class locallib_test extends \advanced_testcase {
 
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
     }
 

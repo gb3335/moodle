@@ -109,7 +109,8 @@ Feature: Run tests over my courses.
     And I should see "This is visible on all pages"
     And "Move Text on all pages block" "menuitem" should not exist in the "Text on all pages" "block"
     And "Move Course overview block" "menuitem" should not exist in the "Course overview" "block"
-    And "Actions menu" "icon" in the "Course overview" "block" should not be visible
+    And I click on "Actions menu" "icon" in the "Course overview" "block"
+    And I should not see "Delete Course overview block"
 
   @javascript
   Scenario: User with creating a course permission can't see the Request course link

@@ -70,7 +70,6 @@ class repaginate_test extends \advanced_testcase {
     private $repaginate = null;
 
     public function setUp(): void {
-        parent::setUp();
         $this->set_quiz_slots($this->get_quiz_object()->get_slots());
         $this->repaginate = new mod_quiz_repaginate_testable(0, $this->quizslots);
     }

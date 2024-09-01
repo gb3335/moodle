@@ -38,7 +38,6 @@ class get_tool_types_and_proxies_count_test extends \mod_lti_testcase {
      * This method runs before every test.
      */
     public function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
         $this->setAdminUser();
     }

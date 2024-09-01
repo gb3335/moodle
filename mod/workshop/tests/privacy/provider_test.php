@@ -124,7 +124,6 @@ class provider_test extends provider_testcase {
      */
     protected function setUp(): void {
         global $DB;
-        parent::setUp();
         $this->resetAfterTest();
         $this->setAdminUser();
 

@@ -57,13 +57,9 @@ $PAGE->set_url($url);
 // If the typ is pagebreak so the item will be saved directly.
 if (!$item->id && $typ === 'pagebreak') {
     require_sesskey();
-
-    $redirectmessage = '';
-    if (!feedback_create_pagebreak($feedback->id)) {
-        $redirectmessage = get_string('cannotcreatepagebreak', 'mod_feedback');
-    }
-
-    redirect($editurl, $redirectmessage, null, \core\output\notification::NOTIFY_WARNING);
+    feedback_create_pagebreak($feedback->id);
+    redirect($editurl->out(false));
+    exit;
 }
 
 //get the existing item or create it
@@ -103,8 +99,11 @@ $PAGE->activityheader->set_attrs([
     "hidecompletion" => true,
     "description" => ''
 ]);
-$PAGE->add_body_class('limitedwidth');
 echo $OUTPUT->header();
+
+/// print the tabs
+$current_tab = 'edit';
+$id = $cm->id;
 
 //print errormsg
 if (isset($error)) {

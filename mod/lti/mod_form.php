@@ -369,16 +369,20 @@ class mod_lti_mod_form extends moodleform_mod {
                 || !empty($this->current->secureicon) || !empty($this->current->icon));
 
             $selectcontentindicatorinner = $iscontentitem ?
-                $OUTPUT->pix_icon('i/valid', get_string('contentselected', 'mod_lti'), 'moodle', ['class' => 'me-1'])
+                $OUTPUT->pix_icon('i/valid', get_string('contentselected', 'mod_lti'), 'moodle', ['class' => 'mr-1'])
                 . get_string('contentselected', 'mod_lti') : '';
             $selectcontentindicator = html_writer::div($selectcontentindicatorinner, '',
                 ['aria-role' => 'status', 'id' => 'id_selectcontentindicator']);
+            $selectcontentstatus = $iscontentitem ? 'true' : 'false';
             $selectcontentgrp = [
                 $mform->createElement('button', 'selectcontent', get_string('selectcontent', 'mod_lti'), $contentbuttonattributes,
-                    ['customclassoverride' => 'btn-secondary']),
+                    ['customclassoverride' => 'btn-primary']),
                 $mform->createElement('html', $selectcontentindicator),
+                $mform->createElement('hidden', 'selectcontentstatus', $selectcontentstatus),
             ];
+            $mform->setType('selectcontentstatus', PARAM_TEXT);
             $mform->addGroup($selectcontentgrp, 'selectcontentgroup', get_string('content'), ' ', false);
+            $mform->addRule('selectcontentgroup', get_string('selectcontentvalidationerror', 'mod_lti'), 'required');
         }
 
         // Adding the standard "name" field.
@@ -534,5 +538,15 @@ class mod_lti_mod_form extends moodleform_mod {
             }
         }
         parent::set_data($defaultvalues);
+    }
+
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+
+        if (isset($data['selectcontentstatus']) && $data['selectcontentstatus'] === 'false') {
+            $errors['selectcontentgroup'] = get_string('selectcontentvalidationerror', 'mod_lti');
+        }
+
+        return $errors;
     }
 }

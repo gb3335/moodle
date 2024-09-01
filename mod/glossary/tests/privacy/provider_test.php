@@ -61,7 +61,6 @@ class provider_test extends \core_privacy\tests\provider_testcase {
      * {@inheritdoc}
      */
     protected function setUp(): void {
-        parent::setUp();
         $this->resetAfterTest();
 
         global $DB;

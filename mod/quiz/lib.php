@@ -1415,7 +1415,6 @@ function quiz_questions_in_use($questionids) {
  */
 function quiz_reset_course_form_definition($mform) {
     $mform->addElement('header', 'quizheader', get_string('modulenameplural', 'quiz'));
-    $mform->addElement('static', 'quizdelete', get_string('delete'));
     $mform->addElement('advcheckbox', 'reset_quiz_attempts',
             get_string('removeallquizattempts', 'quiz'));
     $mform->addElement('advcheckbox', 'reset_quiz_user_overrides',
@@ -1483,7 +1482,7 @@ function quiz_reset_userdata($data) {
                 'quiz IN (SELECT id FROM {quiz} WHERE course = ?)', [$data->courseid]);
         $status[] = [
             'component' => $componentstr,
-            'item' => get_string('removeallquizattempts', 'quiz'),
+            'item' => get_string('attemptsdeleted', 'quiz'),
             'error' => false];
 
         // Remove all grades from gradebook.
@@ -1494,7 +1493,7 @@ function quiz_reset_userdata($data) {
         }
         $status[] = [
             'component' => $componentstr,
-            'item' => get_string('grades'),
+            'item' => get_string('gradesdeleted', 'quiz'),
             'error' => false];
     }
 
@@ -1506,7 +1505,7 @@ function quiz_reset_userdata($data) {
                 'quiz IN (SELECT id FROM {quiz} WHERE course = ?) AND userid IS NOT NULL', [$data->courseid]);
         $status[] = [
             'component' => $componentstr,
-            'item' => get_string('useroverrides', 'quiz'),
+            'item' => get_string('useroverridesdeleted', 'quiz'),
             'error' => false];
         $purgeoverrides = true;
     }
@@ -1516,7 +1515,7 @@ function quiz_reset_userdata($data) {
                 'quiz IN (SELECT id FROM {quiz} WHERE course = ?) AND groupid IS NOT NULL', [$data->courseid]);
         $status[] = [
             'component' => $componentstr,
-            'item' => get_string('groupoverrides', 'quiz'),
+            'item' => get_string('groupoverridesdeleted', 'quiz'),
             'error' => false];
         $purgeoverrides = true;
     }
